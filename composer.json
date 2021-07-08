@@ -1,7 +1,11 @@
 {
     "require": {
+        "php": ">=7.4",
         "slim/slim": "4.*",
         "slim/psr7": "^1.4",
         "cebe/php-openapi": "^1.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
 }
