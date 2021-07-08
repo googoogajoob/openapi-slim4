@@ -2,8 +2,8 @@ version: '3.4'
 services:
   backend-server:
     build:
-      context: .
-      dockerfile: .docker/backend-server/Dockerfile
+      context: ..
+      dockerfile: ../.docker/backend-server/Dockerfile
       target: develop
     container_name: backend-server
     environment:
