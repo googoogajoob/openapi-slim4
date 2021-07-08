@@ -1,0 +1,17 @@
+{
+  "get": {
+    "parameters": [
+      {"$ref":  "../subdir.yaml#/components/parameters/Parameter.PetId"}
+    ],
+    "responses": {
+      "200": {
+        "description": "return a pet",
+        "content": {
+          "application/json": {
+            "schema": {"$ref":  "../subdir/Pet.yaml"}
+          }
+        }
+      }
+    }
+  }
+}
