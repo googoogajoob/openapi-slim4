@@ -10,7 +10,8 @@
     },
     "autoload": {
         "psr-4": {
-            "googoogajoob\\openapislim4\\": "src/"
+            "openapislim\\": "src/",
+            "openapislimtests\\": "tests/"
         }
     }
 }

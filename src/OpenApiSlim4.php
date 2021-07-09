@@ -7,7 +7,7 @@
  * Time: 12:08
  */
 
-namespace googoogajoob\openapislim4;
+namespace openapislim;
 
 class OpenApiSlim4
 {

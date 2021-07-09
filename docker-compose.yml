@@ -7,6 +7,7 @@ services:
       target: develop
     container_name: backend-server
     environment:
+      - PHP_IDE_CONFIG=serverName=backend-server
       - XDEBUG_CONFIG=idekey=PHPSTORM
       - TZ=Europe/Berlin
     ports:
