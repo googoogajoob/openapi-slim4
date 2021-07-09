@@ -7,7 +7,7 @@
  * Time: 12:08
  */
 
-namespace openapislim;
+namespace OpenApiSlim4;
 
 class OpenApiSlim4
 {

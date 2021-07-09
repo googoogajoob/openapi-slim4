@@ -7,9 +7,9 @@
  * Time: 11:53
  */
 
-namespace openapislimtests\unit;
+namespace OpenApiSlim4Tests\unit;
 
-use openapislim\OpenApiSlim4;
+use OpenApiSlim4\OpenApiSlim4;
 use PHPUnit\Framework\TestCase;
 
 class OpenApiSlim4Test extends TestCase
