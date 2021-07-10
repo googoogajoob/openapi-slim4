@@ -10,12 +10,12 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenApiSlim4\\": "src/"
+            "OpenApiSlim\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenApiSlim4Tests\\": "tests/"
+            "OpenApiSlimTests\\": "tests/"
         }
     }
 }
