@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace OpenApiSlim;
 
 use Slim\App;
+use Psr\Log\LoggerInterface;
 
 /**
  * This interface is intended for classes which can use an openapi definition to configure a Slim Application.
@@ -32,8 +33,10 @@ interface OpenApiSlimInterface
      * - ...
      *
      * @param App $slimApp an instance of a Slim Application Class
+     *
+     * @param LoggerInterface $logger
      */
-    public function __construct($openApiDefinition, App $slimApp);
+    public function __construct($openApiDefinition, App $slimApp, LoggerInterface $logger);
 
     /**
      * Using the information provided in the constructor parameter $openApiDefinition
