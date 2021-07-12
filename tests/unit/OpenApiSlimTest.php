@@ -5,64 +5,67 @@ namespace OpenApiSlimTests\unit;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use OpenApiSlimTests\unit\mocking\BadSlimApp;
+use OpenApiSlimTests\unit\mocking\WrongSlimAppVersion;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use cebe\openapi\Reader;
-use cebe\openapi\SpecObjectInterface;
 use OpenApiSlim\OpenApiSlim;
 use PHPUnit\Framework\TestCase;
 
 class OpenApiSlimTest extends TestCase
 {
-    public function testGoodValidation()
+    public function testValidate_BadOpenapiDefinition()
     {
-        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getSlimApp());
+        $testClass = $this->getTestClass([], $this->getSlimApp());
+        $this->assertFalse($testClass->validate());
+    }
+
+    public function testValidate_WrongSlimVersion()
+    {
+        $testClass = $this->getTestClass($this->getOpenapiDefinition(__DIR__ . '/../openapi/good-petstore.yaml'), $this->getWrongSlimAppVersion());
+        $this->assertFalse($testClass->validate());
+    }
+
+    public function testValidate_NoRoutesDefined()
+    {
+        $testClass = $this->getTestClass($this->getOpenapiDefinition(__DIR__ . '/../openapi/bad-petstore-no-routes-defined.yaml'), $this->getSlimApp());
+        $this->assertFalse($testClass->validate());
+    }
+
+    public function testValidate_HttpMethodNotAllowed()
+    {
+        $this->assertTrue(false);
+    }
+
+    public function testValidate_HandlerClassNotFound()
+    {
+        $this->assertTrue(false);
+    }
+
+    public function testValidate_HandlerClassMethodNotFound()
+    {
+        $this->assertTrue(false);
+    }
+
+    public function testValidate_Success()
+    {
+        $testClass = $this->getTestClass($this->getOpenapiDefinition(__DIR__ . '/../openapi/good-petstore.yaml'), $this->getSlimApp());
         $this->assertTrue($testClass->validate());
     }
 
-    public function testBadValidationOpenApi()
-    {
-        $testClass = $this->getTestClass(null, $this->getSlimApp());
-        $this->assertFalse($testClass->validate());
-    }
-
-    public function testBadValidationSlim()
-    {
-        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getBadSlimApp());
-        $this->assertFalse($testClass->validate());
-    }
-
-    public function testPetStoreConfiguration()
-    {
-        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getSlimApp());
-        $this->assertTrue($testClass->configureSlim());
-    }
-
-    public function testBadPetStoreValidation()
-    {
-        $testClass = $this->getTestClass($this->getBadPetStoreMissingOperationId(), $this->getSlimApp());
-        $this->assertFalse($testClass->configureSlim());
-    }
+/**************** Supporting Methods **********************************/
 
     protected function getTestClass($apiDefinition, $slimApp): OpenApiSlim
     {
         return new OpenApiSlim($apiDefinition, $slimApp, $this->getLogger());
     }
 
-    protected function getGoodPetStore(): SpecObjectInterface
+    protected function getOpenapiDefinition(string $filePath)
     {
         $cebeReader = new Reader();
 
-        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/good-petstore.yaml');
-    }
-
-    protected function getBadPetStoreMissingOperationId(): SpecObjectInterface
-    {
-        $cebeReader = new Reader();
-
-        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/bad-petstore-missing-operationId.yaml');
+        return $cebeReader::readFromYamlFile($filePath);
     }
 
     protected function getSlimApp(): App
@@ -73,10 +76,10 @@ class OpenApiSlimTest extends TestCase
         return $slimApp;
     }
 
-    protected function getBadSlimApp(): App
+    protected function getWrongSlimAppVersion(): App
     {
         $responseFactory = AppFactory::DetermineResponseFactory();
-        $slimApp = new BadSlimApp($responseFactory);
+        $slimApp = new WrongSlimAppVersion($responseFactory);
 
         return $slimApp;
     }

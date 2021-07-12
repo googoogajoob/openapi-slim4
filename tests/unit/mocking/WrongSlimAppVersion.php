@@ -11,7 +11,7 @@ namespace OpenApiSlimTests\unit\mocking;
 
 use Slim\App;
 
-class BadSlimApp extends App
+class WrongSlimAppVersion extends App
 {
     public const VERSION = '3.8.1';
 }
