@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 
 class OpenApiSlim implements OpenApiSlimInterface
 {
+    const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'];
     protected $openApiDefinition;
     protected App $slimApp;
     protected LoggerInterface $logger;
@@ -50,7 +51,15 @@ class OpenApiSlim implements OpenApiSlimInterface
      */
     protected function configureSlimRoutes(): bool
     {
-        return false;
+        foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
+            foreach ($pathConfigurationData as $httpMethod => $handler) {
+                $this->slimApp->map([$httpMethod], $path, $handler);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -72,11 +81,16 @@ class OpenApiSlim implements OpenApiSlimInterface
             $openApiPaths = $this->openApiDefinition->paths->getPaths();
         }
         foreach ($openApiPaths as $path => $pathConfiguration) {
-            $methods = $pathConfiguration->getOperations();
-            foreach ($methods as $method => $pathMethodConfiguration) {
-                $this->pathConfigurationData[$path][$method] = $pathMethodConfiguration->operationId;
+            $httpMethods = $pathConfiguration->getOperations();
+            foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
+                $this->pathConfigurationData[$path][$httpMethod] = $pathMethodConfiguration->operationId;
             }
         }
+    }
+
+    protected function isHttpMethodPermitted(string $httpMethod): bool
+    {
+        return in_array(strtoupper($httpMethod), self::PERMITTED_HTTP_METHODS);
     }
 
     /**
@@ -84,34 +98,43 @@ class OpenApiSlim implements OpenApiSlimInterface
      */
     public function validate(): bool
     {
+        $this->isValidated = false;
         $this->logger->info('Performing validation');
+        $this->logger->debug('Validate OpenApiDefinition');
         if (!$this->openApiDefinition instanceof SpecObjectInterface) {
             $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\SpecObjectInterface');
 
             return false;
         }
+        $this->logger->debug('Validate Slim Version');
         if (substr($this->slimApp::VERSION, 0, 1) != '4') {
             $this->logger->error('Slim Version 4.*.* is required. Given Version is: ' . $this->slimApp::VERSION);
 
             return false;
         }
-
+        $this->logger->debug('Validate Paths (Routes)');
         $this->getPathConfigurationData();
         if (!count($this->pathConfigurationData)) {
-            $this->logger->error('No path Definitions defined');
+            $this->logger->error('No paths(routes) defined');
 
             return false;
         }
         foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
-            foreach ($pathConfigurationData as $method => $handler) {
+            foreach ($pathConfigurationData as $httpMethod => $handler) {
+                if (!$this->isHttpMethodPermitted($httpMethod)) {
+                    $this->logger->error('Http Method is not allowed: ' . $httpMethod);
+
+                    return false;
+                }
                 $handlerParts = explode(':', $handler);
                 $class = $handlerParts[0];
-                $classMethod = $handlerParts[1];
                 if (!class_exists($class)) {
                     $this->logger->error('Handler Class does not exist: ' . $class);
 
                     return false;
-                } elseif ($classMethod && !method_exists($class, $classMethod)) {
+                }
+                $classMethod = ($handlerParts[1] ? $handlerParts[1] : '__invoke');
+                if (!method_exists($class, $classMethod)) {
                     $this->logger->error('Handler Class Method does not exist: ' . $class . '->' . $classMethod);
 
                     return false;

@@ -18,7 +18,7 @@ class OpenApiSlimTest extends TestCase
 {
     public function testGoodValidation()
     {
-        $testClass = $this->getTestClass($this->getPetStore(), $this->getSlimApp());
+        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getSlimApp());
         $this->assertTrue($testClass->validate());
     }
 
@@ -30,19 +30,19 @@ class OpenApiSlimTest extends TestCase
 
     public function testBadValidationSlim()
     {
-        $testClass = $this->getTestClass($this->getPetStore(), $this->getBadSlimApp());
+        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getBadSlimApp());
         $this->assertFalse($testClass->validate());
     }
 
     public function testPetStoreConfiguration()
     {
-        $testClass = $this->getTestClass($this->getPetStore(), $this->getSlimApp());
+        $testClass = $this->getTestClass($this->getGoodPetStore(), $this->getSlimApp());
         $this->assertTrue($testClass->configureSlim());
     }
 
     public function testBadPetStoreValidation()
     {
-        $testClass = $this->getTestClass($this->getBadPetStore(), $this->getSlimApp());
+        $testClass = $this->getTestClass($this->getBadPetStoreMissingOperationId(), $this->getSlimApp());
         $this->assertFalse($testClass->configureSlim());
     }
 
@@ -51,18 +51,18 @@ class OpenApiSlimTest extends TestCase
         return new OpenApiSlim($apiDefinition, $slimApp, $this->getLogger());
     }
 
-    protected function getPetStore(): SpecObjectInterface
+    protected function getGoodPetStore(): SpecObjectInterface
     {
         $cebeReader = new Reader();
 
-        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/official-examples/petstore.yaml');
+        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/good-petstore.yaml');
     }
 
-    protected function getBadPetStore(): SpecObjectInterface
+    protected function getBadPetStoreMissingOperationId(): SpecObjectInterface
     {
         $cebeReader = new Reader();
 
-        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/bad-petstore.yaml');
+        return $cebeReader::readFromYamlFile(__DIR__ . '/../openapi/bad-petstore-missing-operationId.yaml');
     }
 
     protected function getSlimApp(): App
