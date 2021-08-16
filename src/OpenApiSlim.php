@@ -100,18 +100,14 @@ class OpenApiSlim implements OpenApiSlimInterface
     {
         $this->isValidated = false;
         $this->logger->info('Performing validation');
-        $this->logger->debug('Validate OpenApiDefinition');
-        if (!$this->openApiDefinition instanceof SpecObjectInterface) {
-            $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\SpecObjectInterface');
 
-            return false;
-        }
         $this->logger->debug('Validate Slim Version');
         if (substr($this->slimApp::VERSION, 0, 1) != '4') {
             $this->logger->error('Slim Version 4.*.* is required. Given Version is: ' . $this->slimApp::VERSION);
 
             return false;
         }
+
         $this->logger->debug('Validate Paths (Routes)');
         $this->getPathConfigurationData();
         if (!count($this->pathConfigurationData)) {
@@ -119,6 +115,7 @@ class OpenApiSlim implements OpenApiSlimInterface
 
             return false;
         }
+
         foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
             foreach ($pathConfigurationData as $httpMethod => $handler) {
                 if (!$this->isHttpMethodPermitted($httpMethod)) {
@@ -146,5 +143,17 @@ class OpenApiSlim implements OpenApiSlimInterface
         $this->logger->info('Validation successful');
 
         return true;
+    }
+
+    protected function validateOpenApiDefinition(): bool
+    {
+        $this->logger->debug('Validate OpenApiDefinition');
+        if (!$this->openApiDefinition instanceof SpecObjectInterface) {
+            $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\SpecObjectInterface');
+
+            return false;
+        }
+
+        return false;
     }
 }

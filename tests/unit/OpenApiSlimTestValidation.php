@@ -13,37 +13,49 @@ use cebe\openapi\Reader;
 use OpenApiSlim\OpenApiSlim;
 use PHPUnit\Framework\TestCase;
 
-class OpenApiSlimTest extends TestCase
+class OpenApiSlimTestValidation extends TestCase
 {
-    public function testValidate_BadOpenapiDefinition()
+    public function testValidateBadOpenApiDefinition_0()
+    {
+        $testClass = $this->getTestClass(null, $this->getSlimApp());
+        $this->assertFalse($testClass->validate());
+    }
+
+    public function testValidateBadOpenApiDefinition_1()
     {
         $testClass = $this->getTestClass([], $this->getSlimApp());
         $this->assertFalse($testClass->validate());
     }
 
-    public function testValidate_WrongSlimVersion()
+    public function testValidateGoodOpenApiDefinition()
+    {
+        $testClass = $this->getTestClass([], $this->getSlimApp());
+        $this->assertFalse($testClass->validate());
+    }
+
+    public function testValidateWrongSlimVersion()
     {
         $testClass = $this->getTestClass($this->getOpenapiDefinition(__DIR__ . '/../openapi/good-petstore.yaml'), $this->getWrongSlimAppVersion());
         $this->assertFalse($testClass->validate());
     }
 
-    public function testValidate_NoRoutesDefined()
+    public function testValidateNoRoutesDefined()
     {
         $testClass = $this->getTestClass($this->getOpenapiDefinition(__DIR__ . '/../openapi/bad-petstore-no-routes-defined.yaml'), $this->getSlimApp());
         $this->assertFalse($testClass->validate());
     }
 
-    public function testValidate_HttpMethodNotAllowed()
+    public function testValidateHttpMethodNotAllowed()
     {
         $this->assertTrue(false);
     }
 
-    public function testValidate_HandlerClassNotFound()
+    public function testValidateHandlerClassNotFound()
     {
         $this->assertTrue(false);
     }
 
-    public function testValidate_HandlerClassMethodNotFound()
+    public function testValidateHandlerClassMethodNotFound()
     {
         $this->assertTrue(false);
     }

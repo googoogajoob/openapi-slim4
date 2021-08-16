@@ -5,7 +5,6 @@ RUN apt-get -y install vim less iputils-ping libzip-dev zip unzip
 RUN apt-get -y -f install mariadb-client git curl gettext-base
 RUN docker-php-ext-configure zip --with-zip
 RUN docker-php-ext-install zip pdo pdo_mysql
-#    && docker-php-ext-install zip pdo pdo_mysql
 RUN cd; \
     curl -k -sS https://getcomposer.org/installer -o composer-setup.php; \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer
