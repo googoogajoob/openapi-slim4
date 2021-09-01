@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  * To accomplish this, three interface methods have been defined.
  * See the method comments below to understand what each interface method should perform.
  */
-interface OpenApiSlimInterface
+interface OpenApiConfigurationInterface
 {
     /**
      * OpenApiSlimInterface constructor.
