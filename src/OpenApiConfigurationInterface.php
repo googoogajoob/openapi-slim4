@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace OpenApiSlim;
 
-use Slim\App;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -36,7 +35,7 @@ interface OpenApiConfigurationInterface
      *
      * @param LoggerInterface $logger
      */
-    public function __construct($openApiDefinition, App $slimApp, LoggerInterface $logger);
+    public function __construct(LoggerInterface $logger, $openApiDefinition, $framework);
 
     /**
      * Using the information provided in the constructor parameter $openApiDefinition
@@ -44,7 +43,7 @@ interface OpenApiConfigurationInterface
      *
      * @return bool true if the configuration is successful, false otherwise
      */
-    public function configureSlim(): bool;
+    public function configureFramework(): bool;
 
     /**
      * Validate that the information provided in the constructor is sufficient to achieve the task of configuring a slim application
