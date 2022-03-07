@@ -1,4 +1,4 @@
-FROM php:7.4-apache AS baseimage
+FROM php:8.1-apache AS baseimage
 WORKDIR /var/www
 RUN apt-get update
 RUN apt-get -y install vim less iputils-ping libzip-dev zip unzip
@@ -14,7 +14,7 @@ EXPOSE 80
 RUN a2enmod rewrite && a2enmod actions && a2enmod proxy_fcgi && a2enmod headers
 
 FROM baseimage AS develop
-RUN pecl install xdebug-2.9.1
+RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini; \
     echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/php.ini; \
