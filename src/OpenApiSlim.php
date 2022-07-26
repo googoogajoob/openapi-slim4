@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace OpenApiSlim;
 
-use cebe\openapi\SpecObjectInterface;
+use cebe\openapi\Reader;
 use Slim\App;
 use Psr\Log\LoggerInterface;
 
 class OpenApiSlim implements OpenApiConfigurationInterface
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    protected $openApiDefinition;
+    protected Reader $openApiReader;
     protected App $slimApp;
     protected LoggerInterface $logger;
     protected bool $isValidated = false;
@@ -18,16 +18,13 @@ class OpenApiSlim implements OpenApiConfigurationInterface
 
     /**
      * OpenApiSlim constructor.
-     *
-     * @param $openApiDefinition
-     *        must be of type cebe\openapi\SpecObjectInterface
+     * @param Reader $openApiDefinition
      * @param App $slimApp
-     *        must be version 4
      * @param LoggerInterface $logger
      */
-    public function __construct($openApiDefinition, App $slimApp, LoggerInterface $logger)
+    public function __construct(Reader $openApiReader, App $slimApp, LoggerInterface $logger)
     {
-        $this->openApiDefinition = $openApiDefinition;
+        $this->openApiDefinition = $openApiReader;
         $this->slimApp = $slimApp;
         $this->logger = $logger;
     }
@@ -35,7 +32,7 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     /**
      * @return bool
      */
-    public function configureSlim(): bool
+    public function configureSlimFramework(): bool
     {
         if (!$this->isValidated) {
             if (!$this->validate()) {
@@ -78,7 +75,7 @@ class OpenApiSlim implements OpenApiConfigurationInterface
         if (count($this->pathConfigurationData)) {
             $this->logger->debug('PathConfigurationData already defined');
         } else {
-            $openApiPaths = $this->openApiDefinition->paths->getPaths();
+            $openApiPaths = $this->openApiReader->paths->getPaths();
         }
         foreach ($openApiPaths as $path => $pathConfiguration) {
             $httpMethods = $pathConfiguration->getOperations();
@@ -96,7 +93,7 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     /**
      * @return bool
      */
-    public function validate(): bool
+    protected function validate(): bool
     {
         $this->isValidated = false;
         $this->logger->info('Performing validation');
@@ -148,8 +145,8 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     protected function validateOpenApiDefinition(): bool
     {
         $this->logger->debug('Validate OpenApiDefinition');
-        if (!$this->openApiDefinition instanceof SpecObjectInterface) {
-            $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\SpecObjectInterface');
+        if (!$this->openApiReader instanceof Reader) {
+            $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\Reader');
 
             return false;
         }
