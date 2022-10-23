@@ -19,9 +19,10 @@ EXPOSE 80
 RUN a2enmod rewrite && a2enmod actions && a2enmod proxy_fcgi && a2enmod headers
 
 FROM baseimage AS develop
-RUN pecl install xdebug-3.0.4
+RUN pecl install xdebug-3.1.5
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
-    echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
+#    echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
+    echo "xdebug.client_host=192.168.10.213" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini;
