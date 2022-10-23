@@ -5,14 +5,7 @@ services:
       context: .
       dockerfile: .docker/slim4-test/Dockerfile
       target: develop
-#    command: /var/www/bin/startup-dev.sh
-#    container_name: slim4-test
     environment:
-#      CONTAINER_NAME: lsms-communication
-#      LSHOP_MS_CONFIGURATION_FILE_NAME: lsms-communication-openapi
-#      LSHOP_MS_CONFIGURATION_BASE_DIRECTORY: /var/www/config
-#      LSHOP_MS_CONFIGURATION_CACHE_DIRECTORY: /dev/shm
-#      LSHOP_CONFIGURATION_CACHE_ENABLED: "false"
       TZ: Europe/Berlin
       PHP_IDE_CONFIG: serverName=lsms-communication
       XDEBUG_CONFIG: idekey=PHPSTORM
@@ -20,13 +13,9 @@ services:
       BASE_DIRECTORY: /var/www
       LOGLEVEL: DEBUG
       LOGPATH: "php://stderr"
- #   depends_on:
- #     - kafka-setup
     ports:
       - "8081:80"
-#    extra_hosts:
-#      - host.docker.internal:host-gateway
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - .:/var/www
-#      - ./config:/var/www/public/api
-#      - ./../lsms-base:/opt/lsms-base
