@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TestServer\\": "src"
+            "OpenapiSlim4\\": "src"
         }
     }
 }
