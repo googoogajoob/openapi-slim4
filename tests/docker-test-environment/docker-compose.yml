@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  slim4-test:
+    build:
+      context: .
+      dockerfile: .docker/slim4-test/Dockerfile
+      target: develop
+    environment:
+      TZ: Europe/Berlin
+      PHP_IDE_CONFIG: serverName=lsms-communication
+      XDEBUG_CONFIG: idekey=PHPSTORM
+      COMPOSER_ALLOW_SUPERUSER: 1
+      BASE_DIRECTORY: /var/www
+      LOGLEVEL: DEBUG
+      LOGPATH: "php://stderr"
+    ports:
+      - "8081:80"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - .:/var/www
