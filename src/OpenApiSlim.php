@@ -7,9 +7,6 @@ use cebe\openapi\Reader;
 use Slim\App;
 use Psr\Log\LoggerInterface;
 
-
-#JUNK Test
-
 class OpenApiSlim implements OpenApiConfigurationInterface
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
@@ -18,6 +15,39 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     protected LoggerInterface $logger;
     protected bool $isValidated = false;
     protected array $pathConfigurationData = [];
+
+    /**
+     * @param Reader $openApiReader
+     * @return OpenApiConfigurationInterface
+     */
+    public function setOpenApiReader(Reader $openApiReader): OpenApiConfigurationInterface
+    {
+        $this->openApiReader = $openApiReader;
+
+        return $this;
+    }
+
+    /**
+     * @param App $slimApp
+     * @return OpenApiConfigurationInterface
+     */
+    public function setSlimApp(App $slimApp): OpenApiConfigurationInterface
+    {
+        $this->slimApp = $slimApp;
+
+        return $this;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return OpenApiConfigurationInterface
+     */
+    public function setLogger(LoggerInterface $logger): OpenApiConfigurationInterface
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
 
     /**
      * OpenApiSlim constructor.

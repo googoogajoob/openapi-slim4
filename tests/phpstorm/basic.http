@@ -1,0 +1,4 @@
+GET http://localhost:8081/phpinfo.php
+Accept: application/json
+
+###
