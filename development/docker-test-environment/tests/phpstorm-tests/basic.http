@@ -2,3 +2,7 @@ GET http://localhost:8081/phpinfo.php
 Accept: application/json
 
 ###
+GET http://localhost:8081
+Accept: application/json
+
+###
