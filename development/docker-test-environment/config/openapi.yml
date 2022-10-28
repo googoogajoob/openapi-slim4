@@ -1,0 +1,102 @@
+openapi: 3.0.2
+info:
+  title: OpenapiSlim4 Development Testing
+  description: Bringing Slim4 and Openapi together
+  version: "0.1.0"
+servers:
+  - url: https://localhost
+paths:
+  /test-endpoint:
+    get:
+      summary: Test the Get Method
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer:TestEndpoint
+      responses:
+        '501':
+          description: Unimplemented Response
+          content:
+            application/json:
+              schema:
+                type: string
+#    post:
+#      summary: Send a message via one or more defined handlers
+#      description: Dude, describe something
+#      tags:
+#        - Testing
+#      operationId: TestServer:TestEndpoint
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
+#      responses:
+#        200:
+#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
+#        400:
+#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
+#    put:
+#      summary: Send a message via one or more defined handlers
+#      description: Dude, describe something
+#      tags:
+#        - Testing
+#      operationId: TestServer:TestEndpoint
+#      requestBody:
+#       content:
+#         application/json:
+#            schema:
+#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
+#      responses:
+#        200:
+#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
+#        400:
+#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
+#    patch:
+#      summary: Send a message via one or more defined handlers
+#      description: Dude, describe something
+#      tags:
+#        - Testing
+#      operationId: TestServer:TestEndpoint
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
+#      responses:
+#        200:
+#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
+#        400:
+#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
+#    delete:
+#      summary: Send a message via one or more defined handlers
+#      description: Dude, describe something
+#      tags:
+#        - Testing
+#      operationId: TestServer:TestEndpoint
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
+#      responses:
+#        200:
+#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
+#        400:
+#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
+#    head:
+#      summary: Send a message via one or more defined handlers
+#      description: Dude, describe something
+#      tags:
+#        - Testing
+#      operationId: TestServer:TestEndpoint
+#     requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
+#      responses:
+#        200:
+#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
+#        400:
+#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'

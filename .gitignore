@@ -2,3 +2,4 @@
 .directory
 /.phpunit.result.cache
 /development/docker-test-environment/vendor/
+/development/docker-test-environment/config/examples/

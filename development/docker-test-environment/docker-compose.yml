@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: .docker/slim4-test/Dockerfile
       target: develop
-#    command: /var/www/bin/startup-dev.sh
+    command: /var/www/bin/startup-dev.sh
     environment:
       TZ: Europe/Berlin
       PHP_IDE_CONFIG: serverName=lsms-communication
