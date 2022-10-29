@@ -6,97 +6,17 @@ info:
 servers:
   - url: https://localhost
 paths:
-  /test-endpoint:
+  /foo:
     get:
-      summary: Test the Get Method
+      summary: Test GET service
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer:TestEndpoint
+      operationId: TestService
       responses:
         '501':
-          description: Unimplemented Response
+          description: Not implemented
           content:
             application/json:
               schema:
                 type: string
-#    post:
-#      summary: Send a message via one or more defined handlers
-#      description: Dude, describe something
-#      tags:
-#        - Testing
-#      operationId: TestServer:TestEndpoint
-#      requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
-#      responses:
-#        200:
-#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
-#        400:
-#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
-#    put:
-#      summary: Send a message via one or more defined handlers
-#      description: Dude, describe something
-#      tags:
-#        - Testing
-#      operationId: TestServer:TestEndpoint
-#      requestBody:
-#       content:
-#         application/json:
-#            schema:
-#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
-#      responses:
-#        200:
-#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
-#        400:
-#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
-#    patch:
-#      summary: Send a message via one or more defined handlers
-#      description: Dude, describe something
-#      tags:
-#        - Testing
-#      operationId: TestServer:TestEndpoint
-#      requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
-#      responses:
-#        200:
-#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
-#        400:
-#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
-#    delete:
-#      summary: Send a message via one or more defined handlers
-#      description: Dude, describe something
-#      tags:
-#        - Testing
-#      operationId: TestServer:TestEndpoint
-#      requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
-#      responses:
-#        200:
-#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
-#        400:
-#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
-#    head:
-#      summary: Send a message via one or more defined handlers
-#      description: Dude, describe something
-#      tags:
-#        - Testing
-#      operationId: TestServer:TestEndpoint
-#     requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: './schemas/v1/messageRequest.yml#/components/schemas/MessageRequest'
-#      responses:
-#        200:
-#          $ref: './responses/send-success.yml#/components/responses/MessageSuccess'
-#        400:
-#          $ref: './responses/standard.yml#/components/responses/InvalidRequest'
