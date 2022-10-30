@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace OpenApiSlim;
+namespace OpenapiSlim4;
 
 /**
  * This interface is intended for classes which can use an openapi definition to configure a Slim Application.
@@ -10,7 +10,7 @@ namespace OpenApiSlim;
  *
  * How the necessary information and variables are instantiated is up to the developer
  */
-interface OpenApiConfigurationInterface
+interface OpenapiConfigurationInterface
 {
     /**
      * Use information provided by an OpenApi Object and a Slim Application Object to

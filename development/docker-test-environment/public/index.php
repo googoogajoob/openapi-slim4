@@ -11,6 +11,8 @@ use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\ErrorHandler;
 use Slim\ResponseEmitter;
+use OpenapiSlim4\MockConfig;
+use OpenapiSlim4\OpenapiSlim;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -40,6 +42,12 @@ $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
+
+#$openApiConfigurator = new MockConfig();
+#$openApiConfigurator->configureSlimFramework($app);
+$openApiConfigurator = new OpenapiSlim(__DIR__ . '/../config/openapi.yml' , $app);
+$openApiConfigurator->configureSlimFramework($app);
+
 
 // Register middleware
 #$middleware = require __DIR__ . '/../app/middleware.php';

@@ -1,18 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace OpenApiSlim;
+namespace OpenapiSlim4;
 
 use cebe\openapi\Reader;
+use cebe\openapi\spec\OpenApi;
 use Slim\App;
 use Psr\Log\LoggerInterface;
 
-class OpenApiSlim implements OpenApiConfigurationInterface
+#class OpenapiSlim implements OpenApiConfigurationInterface
+class OpenapiSlim
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    protected Reader $openApiReader;
+    #protected Reader $openApiReader;
+    protected OpenApi $openApiReader;
     protected App $slimApp;
-    protected LoggerInterface $logger;
+    protected ?LoggerInterface $logger;
     protected bool $isValidated = false;
     protected array $pathConfigurationData = [];
 
@@ -55,9 +58,11 @@ class OpenApiSlim implements OpenApiConfigurationInterface
      * @param App $slimApp
      * @param LoggerInterface $logger
      */
-    public function __construct(Reader $openApiReader, App $slimApp, LoggerInterface $logger)
+    public function __construct(string $openApiFile, App $slimApp, ?LoggerInterface $logger = null)
     {
-        $this->openApiDefinition = $openApiReader;
+        $junk = Reader::readFromYamlFile($openApiFile);
+        #$this->openApiDefinition = $openApiReader;
+        $this->openApiDefinition = $junk;
         $this->slimApp = $slimApp;
         $this->logger = $logger;
     }
@@ -106,7 +111,8 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     protected function getPathConfigurationData()
     {
         if (count($this->pathConfigurationData)) {
-            $this->logger->debug('PathConfigurationData already defined');
+            #$this->logger->debug('PathConfigurationData already defined');
+            $junk = true;
         } else {
             $openApiPaths = $this->openApiReader->paths->getPaths();
         }
@@ -129,16 +135,16 @@ class OpenApiSlim implements OpenApiConfigurationInterface
     protected function validate(): bool
     {
         $this->isValidated = false;
-        $this->logger->info('Performing validation');
+        #$this->logger->info('Performing validation');
 
-        $this->logger->debug('Validate Slim Version');
+        #$this->logger->debug('Validate Slim Version');
         if (substr($this->slimApp::VERSION, 0, 1) != '4') {
-            $this->logger->error('Slim Version 4.*.* is required. Given Version is: ' . $this->slimApp::VERSION);
+            #$this->logger->error('Slim Version 4.*.* is required. Given Version is: ' . $this->slimApp::VERSION);
 
             return false;
         }
 
-        $this->logger->debug('Validate Paths (Routes)');
+        #$this->logger->debug('Validate Paths (Routes)');
         $this->getPathConfigurationData();
         if (!count($this->pathConfigurationData)) {
             $this->logger->error('No paths(routes) defined');
@@ -149,20 +155,20 @@ class OpenApiSlim implements OpenApiConfigurationInterface
         foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
             foreach ($pathConfigurationData as $httpMethod => $handler) {
                 if (!$this->isHttpMethodPermitted($httpMethod)) {
-                    $this->logger->error('Http Method is not allowed: ' . $httpMethod);
+                    #$this->logger->error('Http Method is not allowed: ' . $httpMethod);
 
                     return false;
                 }
                 $handlerParts = explode(':', $handler);
                 $class = $handlerParts[0];
                 if (!class_exists($class)) {
-                    $this->logger->error('Handler Class does not exist: ' . $class);
+                    #$this->logger->error('Handler Class does not exist: ' . $class);
 
                     return false;
                 }
                 $classMethod = ($handlerParts[1] ? $handlerParts[1] : '__invoke');
                 if (!method_exists($class, $classMethod)) {
-                    $this->logger->error('Handler Class Method does not exist: ' . $class . '->' . $classMethod);
+                    #$this->logger->error('Handler Class Method does not exist: ' . $class . '->' . $classMethod);
 
                     return false;
                 }
@@ -170,16 +176,16 @@ class OpenApiSlim implements OpenApiConfigurationInterface
         }
 
         $this->isValidated = true;
-        $this->logger->info('Validation successful');
+        #$this->logger->info('Validation successful');
 
         return true;
     }
 
     protected function validateOpenApiDefinition(): bool
     {
-        $this->logger->debug('Validate OpenApiDefinition');
+        #$this->logger->debug('Validate OpenApiDefinition');
         if (!$this->openApiReader instanceof Reader) {
-            $this->logger->error('OpenApiDefinition must be of type: cebe\openapi\Reader');
+            #$this->logger->error('OpenApiDefinition must be of type: cebe\openapi\Reader');
 
             return false;
         }

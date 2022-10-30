@@ -3,7 +3,9 @@
     "type": "library",
     "description": "Bringing Slim4 and Openapi together",
     "require": {
-        "php": "^8"
+        "php": "^8",
+        "slim/slim": "4.*",
+        "cebe/php-openapi": "^1.7"
     },
     "autoload": {
         "psr-4": {
