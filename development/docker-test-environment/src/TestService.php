@@ -6,7 +6,7 @@ namespace TestServer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class Render
+class TestService
 {
     /**
      * @param Request $request
