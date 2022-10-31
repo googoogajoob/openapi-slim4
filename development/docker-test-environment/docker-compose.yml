@@ -5,10 +5,11 @@ services:
       context: .
       dockerfile: .docker/slim4-test/Dockerfile
       target: develop
+    command: /var/www/bin/startup-dev.sh
     environment:
       TZ: Europe/Berlin
       PHP_IDE_CONFIG: serverName=lsms-communication
-      XDEBUG_CONFIG: idekey=PHPSTORM
+      XDEBUG_CONFIG: "idekey=PHPSTORM log_level=0"
       COMPOSER_ALLOW_SUPERUSER: 1
       BASE_DIRECTORY: /var/www
       LOGLEVEL: DEBUG
@@ -19,3 +20,4 @@ services:
       - host.docker.internal:host-gateway
     volumes:
       - .:/var/www
+      - ../..:/opt/googoogajoob/openapi-slim4

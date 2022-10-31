@@ -1,8 +1,5 @@
-# phpstorm project files
 .idea
-# composer vendor dir
-/vendor
-# linux dolphin
 .directory
-# phpstorm
 /.phpunit.result.cache
+/development/docker-test-environment/vendor/
+/development/docker-test-environment/config/examples/

@@ -1,21 +1,15 @@
 {
+    "name": "googoogajoob/openapi-slim4",
+    "type": "library",
+    "description": "Bringing Slim4 and OpenApi together",
     "require": {
         "php": "^8",
-        "ext-json": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8",
-        "codeception/codeception": "^4.1",
-        "codeception/module-db": "^1.1",
-        "codeception/module-rest": "^1.0.0",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-asserts": "^1.3",
-        "codeception/module-filesystem": "^1.0",
-        "ext-curl": "*"
+        "slim/slim": "4.*",
+        "cebe/php-openapi": "^1.7"
     },
     "autoload": {
         "psr-4": {
-            "OpenapiSlim4\\": "src"
+            "OpenApiSlim4\\": "src"
         }
     }
 }
