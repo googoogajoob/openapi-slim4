@@ -12,3 +12,9 @@ GET http://localhost:8081/foo
 Accept: application/json
 
 ###
+
+POST http://localhost:8081/foo
+Accept: application/json
+
+{}
+###

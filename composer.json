@@ -1,7 +1,7 @@
 {
     "name": "googoogajoob/openapi-slim4",
     "type": "library",
-    "description": "Bringing Slim4 and Openapi together",
+    "description": "Bringing Slim4 and OpenApi together",
     "require": {
         "php": "^8",
         "slim/slim": "4.*",
@@ -9,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenapiSlim4\\": "src"
+            "OpenApiSlim4\\": "src"
         }
     }
 }

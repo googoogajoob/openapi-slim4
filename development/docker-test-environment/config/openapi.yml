@@ -1,18 +1,21 @@
 openapi: 3.0.2
 info:
-  title: OpenapiSlim4 Development Testing
-  description: Bringing Slim4 and Openapi together
+  title: OpenApiSlim4 Development Testing
+  description: Bringing Slim4 and OpenApi together
   version: "0.1.0"
 servers:
   - url: https://localhost
 paths:
   /foo:
+    x-middleware:
+      - "/middlewarePath/pathOne"
+      - "/middlewarePath/pathTwo"
     get:
       summary: Test GET service
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestService
+      operationId: TestServer\TestService
       responses:
         '501':
           description: Not implemented
@@ -20,3 +23,207 @@ paths:
             application/json:
               schema:
                 type: string
+    post:
+      summary: Test POSTservice
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    patch:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    options:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    head:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    trace:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+  /bar:
+    get:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      summary: Test POSTservice
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+      x-middleware:
+        - "/middlewarePath/postOne"
+        - "/middlewarePath/postTwo"
+    put:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    patch:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    options:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    head:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+    trace:
+      summary: Test GET service
+      description: No parameters or body, empty response
+      tags:
+        - Testing
+      operationId: TestServer\TestService
+      responses:
+        '501':
+          description: Not implemented
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  x-middleware:
+    - "/middlewarePath/globalOne"
+    - "/middlewarePath/globalTwo"
+    - "/middlewarePath/globalThree"

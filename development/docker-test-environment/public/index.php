@@ -2,38 +2,30 @@
 
 declare(strict_types=1);
 
-#use App\Application\Handlers\HttpErrorHandler;
-#use App\Application\Handlers\ShutdownHandler;
-#use App\Application\ResponseEmitter\ResponseEmitter;
-#use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\ErrorHandler;
 use Slim\ResponseEmitter;
-use OpenapiSlim4\MockConfig;
-use OpenapiSlim4\OpenapiSlim;
+use OpenApiSlim4\OpenApiSlim4;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
-if (false) { // Should be set to true in production
-    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-}
-
-// Set up settings
-#$settings = require __DIR__ . '/../app/settings.php';
-#$settings($containerBuilder);
+$settings = [
+    'testSettings-1' => 'This is Test Setting 1',
+    'testSettings-2' => 'This is Test Setting 2',
+    'displayErrorDetails' => true,
+    'logError' => false,
+    'logErrorDetails' => false
+];
+$containerBuilder->addDefinitions($settings);
 
 // Set up dependencies
 #$dependencies = require __DIR__ . '/../app/dependencies.php';
 #$dependencies($containerBuilder);
-
-// Set up repositories
-#$repositories = require __DIR__ . '/../app/repositories.php';
-#$repositories($containerBuilder);
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
@@ -43,28 +35,12 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-#$openApiConfigurator = new MockConfig();
-#$openApiConfigurator->configureSlimFramework($app);
-$openApiConfigurator = new OpenapiSlim(__DIR__ . '/../config/openapi.yml' , $app);
-$openApiConfigurator->configureSlimFramework($app);
+$openApiConfigurator = new OpenApiSlim4(__DIR__ . '/../config/openapi.yml', $app);
+$openApiConfigurator->configureSlimFramework();
 
-
-// Register middleware
-#$middleware = require __DIR__ . '/../app/middleware.php';
-#$middleware($app);
-
-// Register routes
-#$routes = require __DIR__ . '/../app/routes.php';
-#$routes($app);
-
-/** @var SettingsInterface $settings */
-#$settings = $container->get(SettingsInterface::class);
-#$displayErrorDetails = $settings->get('displayErrorDetails');
-#$logError = $settings->get('logError');
-#$logErrorDetails = $settings->get('logErrorDetails');
-$displayErrorDetails = true;
-$logError = true;
-$logErrorDetails = true;
+$displayErrorDetails = $container->get('displayErrorDetails');
+$logError = $container->get('logError');
+$logErrorDetails = $container->get('logErrorDetails');
 
 // Create Request object from globals
 $serverRequestCreator = ServerRequestCreatorFactory::create();
@@ -73,10 +49,6 @@ $request = $serverRequestCreator->createServerRequestFromGlobals();
 // Create Error Handler
 $responseFactory = $app->getResponseFactory();
 $errorHandler = new ErrorHandler($callableResolver, $responseFactory);
-
-// Create Shutdown Handler
-#$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-#register_shutdown_function($shutdownHandler);
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();
