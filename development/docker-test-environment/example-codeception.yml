@@ -1,0 +1,31 @@
+# suite config
+suites:
+    api:
+        actor: ApiTester
+        path: .
+        modules:
+            enabled:
+                - Asserts
+                - \Helper\Api
+                - Filesystem
+                - REST:
+                    url: http://localhost
+                    depends: PhpBrowser
+                    part: Json
+                - PhpBrowser:
+                    url: 'http://localhost'
+                    curl:
+                      CURLOPT_TIMEOUT: 300
+
+params:
+  - env
+
+paths:
+    tests: tests/codeception
+    output: tests/codeception/_output
+    data: tests/codeception/_data
+    support: tests/codeception/_support
+
+settings:
+    shuffle: false
+    lint: true
