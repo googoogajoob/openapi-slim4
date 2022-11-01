@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 
 class OpenApiSlim4 implements OpenApiConfigurationInterface
 {
-    const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'];
+    const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
     protected OpenApi $openApi;
     protected App $slimApp;
     protected ?LoggerInterface $logger;
@@ -78,11 +78,9 @@ class OpenApiSlim4 implements OpenApiConfigurationInterface
      */
     protected function configureSlimRoutes(): bool
     {
-        foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
-            foreach ($pathConfigurationData as $httpMethod => $handler) {
+        foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
+            foreach ($OpenApiPathData as $httpMethod => $handler) {
                 $this->slimApp->map([strtoupper($httpMethod)], $path, $handler);
-
-                return false;
             }
         }
 

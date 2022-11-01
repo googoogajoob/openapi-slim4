@@ -1,6 +1,6 @@
 <?php
 
-class middlewareCest
+class MiddlewareFooCest
 {
     public function _before(ApiTester $I)
     {

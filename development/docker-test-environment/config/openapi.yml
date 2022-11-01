@@ -12,10 +12,10 @@ paths:
       - "/middlewarePath/pathTwo"
     get:
       summary: Test GET service
-      description: No parameters or body, empty response
+#      description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -28,7 +28,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -41,7 +41,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -54,7 +54,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -67,7 +67,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -80,7 +80,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -93,7 +93,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -106,7 +106,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -120,7 +120,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -133,7 +133,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -149,7 +149,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -162,7 +162,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -175,7 +175,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -188,7 +188,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -201,7 +201,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
@@ -214,7 +214,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: TestServer\TestHandler
       responses:
         '501':
           description: Not implemented
