@@ -8,14 +8,14 @@ servers:
 paths:
   /foo:
     x-middleware:
-      - "/middlewarePath/pathOne"
-      - "/middlewarePath/pathTwo"
+      - "/Testserver/Middleware/PathMiddleware1"
+      - "/Testserver/Middleware/PathMiddleware2"
     get:
       summary: Test GET service
 #      description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -24,11 +24,11 @@ paths:
               schema:
                 type: string
     post:
-      summary: Test POSTservice
+      summary: Test POST service
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -41,7 +41,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\PutPatchHandler:put
+      operationId: TestServer\Handlers\PutPatchHandler:put
       responses:
         '501':
           description: Not implemented
@@ -54,7 +54,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\PutPatchHandler:patch
+      operationId: TestServer\Handlers\PutPatchHandler:patch
       responses:
         '501':
           description: Not implemented
@@ -67,7 +67,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -80,7 +80,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -93,7 +93,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -106,7 +106,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -120,7 +120,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -133,7 +133,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -142,14 +142,14 @@ paths:
               schema:
                 type: string
       x-middleware:
-        - "/middlewarePath/postOne"
-        - "/middlewarePath/postTwo"
+      - "/Testserver/Middleware/PostMiddleware1"
+      - "/Testserver/Middleware/PostMiddleware2"
     put:
       summary: Test GET service
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\PutPatchHandler:put
+      operationId: TestServer\Handlers\PutPatchHandler:put
       responses:
         '501':
           description: Not implemented
@@ -162,7 +162,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\PutPatchHandler:patch
+      operationId: TestServer\Handlers\PutPatchHandler:patch
       responses:
         '501':
           description: Not implemented
@@ -175,7 +175,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -188,7 +188,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -201,7 +201,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -214,7 +214,7 @@ paths:
       description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\InvokeHandler
+      operationId: TestServer\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -224,6 +224,6 @@ paths:
                 type: string
 components:
   x-middleware:
-    - "/middlewarePath/globalOne"
-    - "/middlewarePath/globalTwo"
-    - "/middlewarePath/globalThree"
+    - "/Testserver/Middleware/GlobalMiddleware1"
+    - "/Testserver/Middleware/GlobalMiddleware2"
+    - "/Testserver/Middleware/GlobalMiddleware3"
