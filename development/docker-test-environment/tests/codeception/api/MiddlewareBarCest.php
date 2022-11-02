@@ -11,9 +11,10 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendGet('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1']]);
     }
 
     public function postBarTest(ApiTester $I)
@@ -21,9 +22,11 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPost('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->assertArrayNotHasKey('message', $aResponse);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1']]);
     }
 
     public function putBarTest(ApiTester $I)
@@ -31,9 +34,10 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPut('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1']]);
     }
 
     public function patchBarTest(ApiTester $I)
@@ -41,9 +45,10 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPatch('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1']]);
     }
 
     public function deleteBarTest(ApiTester $I)
@@ -51,9 +56,10 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendDelete('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1']]);
     }
 
     public function optionsBarTest(ApiTester $I)
@@ -61,9 +67,10 @@ class MiddlewareBarCest
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendOptions('/bar');
+        $aResponse = json_decode($response, true);
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        assertArrayNotHasKey('message', $response);
+        $I->seeResponseContainsJson(['message' => ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1']]);
     }
 
     public function headBarTest(ApiTester $I)
