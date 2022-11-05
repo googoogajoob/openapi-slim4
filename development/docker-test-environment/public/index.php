@@ -35,8 +35,12 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-$openApiConfigurator = new OpenApiSlim4(__DIR__ . '/../config/openapi.yml', $app);
-$openApiConfigurator->configureSlimFramework();
+if (getenv('NATIVE_SLIM_CONFIG')) {
+
+} else {
+    $openApiConfigurator = new OpenApiSlim4(__DIR__ . '/../config/openapi.yml', $app);
+    $openApiConfigurator->configureSlimFramework();
+}
 
 $displayErrorDetails = $container->get('displayErrorDetails');
 $logError = $container->get('logError');

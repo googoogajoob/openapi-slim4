@@ -8,14 +8,14 @@ servers:
 paths:
   /foo:
     x-middleware:
-      - "/middlewarePath/pathOne"
-      - "/middlewarePath/pathTwo"
+      - Testserver\Middleware\PathMiddleware1
+      - Testserver\Middleware\PathMiddleware2
     get:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
+#      description: No parameters or body, empty response
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -24,11 +24,10 @@ paths:
               schema:
                 type: string
     post:
-      summary: Test POSTservice
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -36,12 +35,13 @@ paths:
             application/json:
               schema:
                 type: string
+      x-middleware:
+        - Testserver\Middleware\PostMiddleware2
     put:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\PutPatchHandler:put
       responses:
         '501':
           description: Not implemented
@@ -50,11 +50,10 @@ paths:
               schema:
                 type: string
     patch:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\PutPatchHandler:patch
       responses:
         '501':
           description: Not implemented
@@ -63,11 +62,10 @@ paths:
               schema:
                 type: string
     delete:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -76,11 +74,10 @@ paths:
               schema:
                 type: string
     options:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -89,11 +86,10 @@ paths:
               schema:
                 type: string
     head:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -102,11 +98,10 @@ paths:
               schema:
                 type: string
     trace:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -116,11 +111,10 @@ paths:
                 type: string
   /bar:
     get:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -129,11 +123,10 @@ paths:
               schema:
                 type: string
     post:
-      summary: Test POSTservice
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -142,14 +135,13 @@ paths:
               schema:
                 type: string
       x-middleware:
-        - "/middlewarePath/postOne"
-        - "/middlewarePath/postTwo"
+      - Testserver\Middleware\PostMiddleware1
+      - Testserver\Middleware\PostMiddleware2
     put:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\PutPatchHandler:put
       responses:
         '501':
           description: Not implemented
@@ -158,11 +150,10 @@ paths:
               schema:
                 type: string
     patch:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\PutPatchHandler:patch
       responses:
         '501':
           description: Not implemented
@@ -171,11 +162,10 @@ paths:
               schema:
                 type: string
     delete:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -184,11 +174,10 @@ paths:
               schema:
                 type: string
     options:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -197,11 +186,10 @@ paths:
               schema:
                 type: string
     head:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -210,11 +198,10 @@ paths:
               schema:
                 type: string
     trace:
-      summary: Test GET service
-      description: No parameters or body, empty response
+      summary: Test service method
       tags:
         - Testing
-      operationId: TestServer\TestService
+      operationId: Testserver\Handlers\InvokeHandler
       responses:
         '501':
           description: Not implemented
@@ -224,6 +211,6 @@ paths:
                 type: string
 components:
   x-middleware:
-    - "/middlewarePath/globalOne"
-    - "/middlewarePath/globalTwo"
-    - "/middlewarePath/globalThree"
+    - Testserver\Middleware\GlobalMiddleware1
+    - Testserver\Middleware\GlobalMiddleware2
+    - Testserver\Middleware\GlobalMiddleware3

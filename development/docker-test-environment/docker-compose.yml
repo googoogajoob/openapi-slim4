@@ -8,7 +8,7 @@ services:
     command: /var/www/bin/startup-dev.sh
     environment:
       TZ: Europe/Berlin
-      PHP_IDE_CONFIG: serverName=lsms-communication
+      PHP_IDE_CONFIG: serverName=slim4-test
       XDEBUG_CONFIG: "idekey=PHPSTORM log_level=0"
       COMPOSER_ALLOW_SUPERUSER: 1
       BASE_DIRECTORY: /var/www
