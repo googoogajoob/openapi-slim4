@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace TestServer;
+namespace Testserver\Handlers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class TestService
+class InvokeHandler
 {
     /**
      * @param Request $request
@@ -17,7 +17,7 @@ class TestService
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $returnStatus = 501;
-        $payload = ['data' => 'Test Response'];
+        $payload = ['data' => $request->getMethod() . ' __invoke handler'];
         $response = $response->withHeader('Content-type', 'application/json');
         $response = $response->withStatus($returnStatus);
         $response->getBody()->write(json_encode($payload));
