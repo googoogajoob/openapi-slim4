@@ -21,15 +21,14 @@ abstract class BaseMiddleware implements Middleware
      * @param string $message
      * @return Response
      */
-    protected function doProcess(Request $request, RequestHandler $handler, string $message): Response
+    protected function addMessage(Request $request, RequestHandler $handler, string $message): Response
     {
-#        $body = json_decode((string) $request->getBody(), true);
-#        if (!array_key_exists('message', $body)) {
-#            $body['message'] = null;
-#        }
-#        $body['message'][] = $message;
-#        $response->getBody()->write(json_encode($payload));
+        $response = $handler->handle($request);
+        $body = json_decode((string) $response->getBody(), true);
+        $body['message'][] = $message;
+        $response->getBody()->rewind();
+        $response->getBody()->write(json_encode($body));
 
-        return $handler->handle($request);
+        return $response;
     }
 }

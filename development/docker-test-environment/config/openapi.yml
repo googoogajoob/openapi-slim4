@@ -8,8 +8,8 @@ servers:
 paths:
   /foo:
     x-middleware:
-      - "/Testserver/Middleware/PathMiddleware1"
-      - "/Testserver/Middleware/PathMiddleware2"
+      - Testserver\Middleware\PathMiddleware1
+      - Testserver\Middleware\PathMiddleware2
     get:
       summary: Test service method
 #      description: No parameters or body, empty response
@@ -35,6 +35,8 @@ paths:
             application/json:
               schema:
                 type: string
+      x-middleware:
+        - Testserver\Middleware\PostMiddleware2
     put:
       summary: Test service method
       tags:
@@ -133,8 +135,8 @@ paths:
               schema:
                 type: string
       x-middleware:
-      - "/Testserver/Middleware/PostMiddleware1"
-      - "/Testserver/Middleware/PostMiddleware2"
+      - Testserver\Middleware\PostMiddleware1
+      - Testserver\Middleware\PostMiddleware2
     put:
       summary: Test service method
       tags:
@@ -209,6 +211,6 @@ paths:
                 type: string
 components:
   x-middleware:
-    - "/Testserver/Middleware/GlobalMiddleware1"
-    - "/Testserver/Middleware/GlobalMiddleware2"
-    - "/Testserver/Middleware/GlobalMiddleware3"
+    - Testserver\Middleware\GlobalMiddleware1
+    - Testserver\Middleware\GlobalMiddleware2
+    - Testserver\Middleware\GlobalMiddleware3

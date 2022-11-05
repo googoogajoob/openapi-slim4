@@ -12,6 +12,6 @@ class GlobalMiddleware1 extends BaseMiddleware
 {
     public function process(Request $request, RequestHandler $handler): Response
     {
-        return $this->doProcess($request, $handler, __CLASS__);
+        return $this->addMessage($request, $handler, substr(__CLASS__, strlen(__NAMESPACE__) + 1));
     }
 }
