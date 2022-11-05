@@ -56,9 +56,9 @@ class OpenApiSlim4 implements OpenApiConfigurationInterface
      * @param App $slimApp
      * @param LoggerInterface $logger
      */
-    public function __construct(string $openApiYamlFile, App $slimApp, ?LoggerInterface $logger = null)
+    public function __construct(App $slimApp, ?LoggerInterface $logger = null)
     {
-        $this->openApi = Reader::readFromYamlFile($openApiYamlFile);
+        $this->openApi = Reader::readFromYamlFile($slimApp->getContainer()->get('openApiPath'));
         $this->slimApp = $slimApp;
         $this->logger = $logger;
     }
