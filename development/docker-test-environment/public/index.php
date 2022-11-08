@@ -33,7 +33,10 @@ $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
 if ($container->get('nativeSlimConfiguration')) {
-    $junk = 1;
+    require __DIR__ . '/../config/slimConfiguration.php';
+    slim4ConfigureRoutes($app);
+#    slim4ConfigureGroupMiddleware($app);  /* Future Development */
+    slim4ConfigureGlobalMiddleware($app);
 } else {
     $openApiConfigurator = new OpenApiSlim4($app);
     $openApiConfigurator->configureSlimFramework();
