@@ -8,7 +8,7 @@ class MiddlewareFooCest
 
     public function getFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = ['GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendGet('/foo');
@@ -21,7 +21,7 @@ class MiddlewareFooCest
 
     public function postFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1', 'PostMiddleware2'];
+        $expectedMessage = ['PostMiddleware2', 'GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPost('/foo');
@@ -34,7 +34,7 @@ class MiddlewareFooCest
 
     public function putFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = ['GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPut('/foo');
@@ -47,7 +47,7 @@ class MiddlewareFooCest
 
     public function patchFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = ['GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPatch('/foo');
@@ -60,7 +60,7 @@ class MiddlewareFooCest
 
     public function deleteFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = ['GlobalMiddleware1', 'GlobalMiddleware2', 'GlobalMiddleware3'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendDelete('/foo');
@@ -73,11 +73,11 @@ class MiddlewareFooCest
 
     public function optionsFooTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendOptions('/foo');
-        $response = json_decode($response, true);
+        $response = json_decode($response, true) ?? [];
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
