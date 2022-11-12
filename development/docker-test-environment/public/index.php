@@ -14,18 +14,15 @@ require __DIR__ . '/../vendor/autoload.php';
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 
-$settings = [
-    'testSettings-1' => 'This is Test Setting 1',
-    'testSettings-2' => 'This is Test Setting 2',
-    'displayErrorDetails' => true,
-    'logError' => false,
-    'logErrorDetails' => false
-];
+// Setup Settings
+/** @var array $settings */
+require __DIR__ . '/../config/settings.php';
 $containerBuilder->addDefinitions($settings);
 
-// Set up dependencies
-#$dependencies = require __DIR__ . '/../app/dependencies.php';
-#$dependencies($containerBuilder);
+// Setup dependencies
+/** @var array $dependencies */
+require __DIR__ . '/../config/dependencies.php';
+$containerBuilder->addDefinitions($dependencies);
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
@@ -35,10 +32,13 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-if (getenv('NATIVE_SLIM_CONFIG')) {
-
+if ($container->get('nativeSlimConfiguration')) {
+    require __DIR__ . '/../config/slimConfiguration.php';
+    slim4ConfigureRoutes($app);
+#    slim4ConfigureGroupMiddleware($app);  /* Future Development */
+    slim4ConfigureGlobalMiddleware($app);
 } else {
-    $openApiConfigurator = new OpenApiSlim4(__DIR__ . '/../config/openapi.yml', $app);
+    $openApiConfigurator = new OpenApiSlim4($app);
     $openApiConfigurator->configureSlimFramework();
 }
 

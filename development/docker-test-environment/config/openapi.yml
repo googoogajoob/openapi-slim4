@@ -7,9 +7,10 @@ servers:
   - url: https://localhost
 paths:
   /foo:
-    x-middleware:
-      - Testserver\Middleware\PathMiddleware1
-      - Testserver\Middleware\PathMiddleware2
+# Future Development
+#    x-middleware:
+#      - Testserver\Middleware\GlobalMiddleware1
+#      - Testserver\Middleware\GlobalMiddleware2
     get:
       summary: Test service method
 #      description: No parameters or body, empty response
