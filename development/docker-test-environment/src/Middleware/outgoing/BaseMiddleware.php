@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Testserver\Middleware;
+namespace Testserver\Middleware\outgoing;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -25,7 +25,7 @@ abstract class BaseMiddleware implements Middleware
     {
         $response = $handler->handle($request);
         $body = json_decode((string) $response->getBody(), true);
-        $body['message'][] = $message;
+        $body['middleware']['outgoing'][] = $message;
         $response->getBody()->rewind();
         $response->getBody()->write(json_encode($body));
 

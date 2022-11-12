@@ -81,8 +81,8 @@ class OpenApiSlim4 implements OpenApiConfigurationInterface
         foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
             foreach ($OpenApiPathData as $httpMethod => $handler) {
                 $route = $this->slimApp->map([strtoupper($httpMethod)], $path, $handler);
-                $route->add('Testserver\Middleware\PathMiddleware1');
-                $route->add('Testserver\Middleware\PathMiddleware2');
+                #$route->add('Testserver\Middleware\outgoing\PathMiddleware1');
+                #$route->add('Testserver\Middleware\outgoing\PathMiddleware2');
             }
         }
 
