@@ -17,7 +17,8 @@ class InvokeHandler
     public function __invoke(Request $request, Response $response, $args): Response
     {
         $returnStatus = 501;
-        $payload = ['data' => $request->getMethod() . ' __invoke handler'];
+        $attributes = $request->getAttribute('incoming', []);
+        $payload = ['data' => $request->getMethod() . ' __invoke handler', 'middleware' => $attributes];
         $response = $response->withHeader('Content-type', 'application/json');
         $response = $response->withStatus($returnStatus);
         $response->getBody()->write(json_encode($payload));

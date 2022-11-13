@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class GlobalMiddleware3 extends BaseMiddleware
+class OutgoingMiddleware2 extends BaseOutgoingMiddleware
 {
     public function process(Request $request, RequestHandler $handler): Response
     {

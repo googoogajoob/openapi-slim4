@@ -7,11 +7,11 @@ use Slim\App;
 function slim4ConfigureRoutes(App $slimApp) {
     $slimApp->map(['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/foo', 'Testserver\Handlers\InvokeHandler');
     $slimApp->map(['POST'], '/foo', 'Testserver\Handlers\InvokeHandler')
-            ->add('Testserver\Middleware\PostMiddleware2');
+            ->add('Testserver\Middleware\outgoing\OutgoingMiddleware3');
     $slimApp->map(['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/bar', 'Testserver\Handlers\InvokeHandler');
     $slimApp->map(['POST'], '/bar', 'Testserver\Handlers\InvokeHandler')
-            ->add('Testserver\Middleware\outgoing\PostMiddleware1')
-            ->add('Testserver\Middleware\outgoing\PostMiddleware2');
+            ->add('Testserver\Middleware\outgoing\OutgoingMiddleware1')
+            ->add('Testserver\Middleware\outgoing\OutgoingMiddleware2');
 }
 
 /** Future Development
@@ -21,7 +21,8 @@ function slim4ConfigureGroupMiddleware(App $slimApp) {
 }**/
 
 function slim4ConfigureGlobalMiddleware(App $slimApp) {
-    $slimApp->add('Testserver\Middleware\outgoing\GlobalMiddleware1')
-            ->add('Testserver\Middleware\outgoing\GlobalMiddleware2')
-            ->add('Testserver\Middleware\outgoing\GlobalMiddleware3');
+    $slimApp->add('Testserver\Middleware\outgoing\OutgoingMiddleware4')
+            ->add('Testserver\Middleware\outgoing\OutgoingMiddleware5')
+            ->add('Testserver\Middleware\incoming\IncomingMiddleware1')
+            ->add('Testserver\Middleware\incoming\IncomingMiddleware2');
 }

@@ -11,7 +11,8 @@ class PutPatchHandler
     public function put(Request $request, Response $response, $args): Response
     {
         $returnStatus = 501;
-        $payload = ['data' => 'PUT handler'];
+        $attributes = $request->getAttribute('incoming', []);
+        $payload = ['data' => 'PUT handler', ['middleware']['incoming'] => $attributes];
         $response = $response->withHeader('Content-type', 'application/json');
         $response = $response->withStatus($returnStatus);
         $response->getBody()->write(json_encode($payload));
@@ -22,7 +23,8 @@ class PutPatchHandler
     public function patch(Request $request, Response $response, $args): Response
     {
         $returnStatus = 501;
-        $payload = ['data' => 'PATCH handler'];
+        $attributes = $request->getAttribute('incoming', []);
+        $payload = ['data' => 'PATCH handler', ['middleware']['incoming'] => $attributes];
         $response = $response->withHeader('Content-type', 'application/json');
         $response = $response->withStatus($returnStatus);
         $response->getBody()->write(json_encode($payload));

@@ -9,8 +9,8 @@ paths:
   /foo:
 # Future Development
 #    x-middleware:
-#      - Testserver\Middleware\outgoing\GlobalMiddleware1
-#      - Testserver\Middleware\outgoing\GlobalMiddleware2
+#      - Testserver\Middleware\outgoing\OutgoingMiddleware1
+#      - Testserver\Middleware\outgoing\OutgoingMiddleware2
     get:
       summary: Test service method
 #      description: No parameters or body, empty response
@@ -37,7 +37,7 @@ paths:
               schema:
                 type: string
       x-middleware:
-        - Testserver\Middleware\outgoing\PostMiddleware2
+        - Testserver\Middleware\outgoing\OutgoingMiddleware3
     put:
       summary: Test service method
       tags:
@@ -136,8 +136,8 @@ paths:
               schema:
                 type: string
       x-middleware:
-      - Testserver\Middleware\outgoing\PostMiddleware1
-      - Testserver\Middleware\outgoing\PostMiddleware2
+      - Testserver\Middleware\outgoing\OutgoingMiddleware1
+      - Testserver\Middleware\outgoing\OutgoingMiddleware2
     put:
       summary: Test service method
       tags:
@@ -212,6 +212,5 @@ paths:
                 type: string
 components:
   x-middleware:
-    - Testserver\Middleware\outgoing\GlobalMiddleware1
-    - Testserver\Middleware\outgoing\GlobalMiddleware2
-    - Testserver\Middleware\outgoing\GlobalMiddleware3
+    - Testserver\Middleware\outgoing\OutgoingMiddleware4
+    - Testserver\Middleware\outgoing\OutgoingMiddleware5

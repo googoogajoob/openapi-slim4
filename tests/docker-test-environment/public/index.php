@@ -32,15 +32,15 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-if ($container->get('nativeSlimConfiguration')) {
+#if ($container->get('nativeSlimConfiguration')) {
     require __DIR__ . '/../config/slimConfiguration.php';
     slim4ConfigureRoutes($app);
 #    slim4ConfigureGroupMiddleware($app);  /* Future Development */
     slim4ConfigureGlobalMiddleware($app);
-} else {
-    $openApiConfigurator = new OpenApiSlim4($app);
-    $openApiConfigurator->configureSlimFramework();
-}
+#} else {
+#    $openApiConfigurator = new OpenApiSlim4($app);
+#    $openApiConfigurator->configureSlimFramework();
+#}
 
 $displayErrorDetails = $container->get('displayErrorDetails');
 $logError = $container->get('logError');
