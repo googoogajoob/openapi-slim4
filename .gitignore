@@ -1,6 +1,6 @@
 .idea
 .directory
 /.phpunit.result.cache
-/development/docker-test-environment/vendor/
-/development/docker-test-environment/config/examples/
-/development/docker-test-environment/tests/codeception/_output/
+/tests/docker-test-environment/vendor/
+/tests/docker-test-environment/config/examples/
+/tests/docker-test-environment/tests/codeception/_output/
