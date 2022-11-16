@@ -3,7 +3,7 @@
 if [ $# -ne 3 ]
   then
     echo "Three arguments required:"
-    echo "   SLIM for native slim (otherwise googoogajob:openapi_slim4)"
+    echo "   SLIM for native slim (otherwise openapi-slim4)"
     echo "   JSON openapi format (otherwise yaml)"
     echo "   CLEAN clear output results (otherwise no cleaning)"
     exit
@@ -21,7 +21,7 @@ then
   CONFIG_OPTION="slim"
 else
   SLIMCONFIG="NATIVE_SLIM_CONFIG=0"
-  CONFIG_OPTION="googoogajoob"
+  CONFIG_OPTION="openapiSlim4"
 fi
 
 if [ $2 == "JSON" ];
