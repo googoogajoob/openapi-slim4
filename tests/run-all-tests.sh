@@ -1,13 +1,8 @@
 #!/bin/bash
-
-echo "NATIVE_SLIM_CONFIG=1" > ./docker-test-environment/.env
-echo "OPENAPI_PATH=/var/www/config/openapi.yml" >> ./docker-test-environment/.env
-docker exec --env NATIVE_SLIM_CONFIG=0 docker-test-environment_slim4-test_1 /usr/local/bin/php /var/www/vendor/bin/codecept --report run api
-
-echo "NATIVE_SLIM_CONFIG=0" > ./docker-test-environment/.env
-echo "OPENAPI_PATH=/var/www/config/openapi.yml" >> ./docker-test-environment/.env
-docker exec --env NATIVE_SLIM_CONFIG=1 docker-test-environment_slim4-test_1 /usr/local/bin/php /var/www/vendor/bin/codecept --report run api
-
-#echo "NATIVE_SLIM_CONFIG=1" > ./docker-test-environment/.env
-#echo "OPENAPI_PATH=/var/www/config/openapi.yml" >> ./docker-test-environment/.env
-#docker exec docker-test-environment_slim4-test_1 /usr/local/bin/php /var/www/vendor/bin/codecept run api PathFooCest::GetFooTest
+echo "Testing native slim configuration ..."
+docker exec -it docker-test-environment_slim4-test_1 /var/www/run-codeception-test.sh SLIM x CLEAN > /dev/null
+echo "Testing openapi-slim4 with json format ..."
+docker exec -it docker-test-environment_slim4-test_1 /var/www/run-codeception-test.sh x JSON x > /dev/null
+echo "Testing openapi-slim4 with yaml format ..."
+docker exec -it docker-test-environment_slim4-test_1 /var/www/run-codeception-test.sh x x x > /dev/null
+echo "Tests completed"
