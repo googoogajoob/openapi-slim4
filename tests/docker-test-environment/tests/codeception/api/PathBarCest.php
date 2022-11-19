@@ -74,16 +74,6 @@ class PathBarCest
         $I->seeResponseCodeIs(501);
     }
 
-    public function traceBarTest(ApiTester $I)
-    {
-        $I->haveHttpHeader('accept', 'application/json');
-        $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->send('TRACE', '/bar');
-        $I->seeResponseCodeIs(501);
-        $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
-    }
-
     public function notFoundTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');

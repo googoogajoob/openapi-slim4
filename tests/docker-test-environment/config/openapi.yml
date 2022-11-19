@@ -97,18 +97,6 @@ paths:
             application/json:
               schema:
                 type: string
-    trace:
-      summary: Test service method
-      tags:
-        - Testing
-      operationId: Testserver\Handlers\InvokeHandler
-      responses:
-        '501':
-          description: Not implemented
-          content:
-            application/json:
-              schema:
-                type: string
   /bar:
     get:
       summary: Test service method
@@ -186,18 +174,6 @@ paths:
               schema:
                 type: string
     head:
-      summary: Test service method
-      tags:
-        - Testing
-      operationId: Testserver\Handlers\InvokeHandler
-      responses:
-        '501':
-          description: Not implemented
-          content:
-            application/json:
-              schema:
-                type: string
-    trace:
       summary: Test service method
       tags:
         - Testing
