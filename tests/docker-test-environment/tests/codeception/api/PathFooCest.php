@@ -1,5 +1,6 @@
 <?php
 
+
 class PathFooCest
 {
     public function _before(ApiTester $I)
@@ -13,7 +14,7 @@ class PathFooCest
         $response = $I->sendGet('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'GET __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function postFooTest(ApiTester $I)
@@ -23,7 +24,7 @@ class PathFooCest
         $response = $I->sendPost('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'POST __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function putFooTest(ApiTester $I)
@@ -33,7 +34,7 @@ class PathFooCest
         $response = $I->sendPut('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'PUT handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\PutPatchHandler::put']);
     }
 
     public function patchFooTest(ApiTester $I)
@@ -43,7 +44,7 @@ class PathFooCest
         $response = $I->sendPatch('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'PATCH handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\PutPatchHandler::patch']);
     }
 
     public function deleteFooTest(ApiTester $I)
@@ -53,7 +54,7 @@ class PathFooCest
         $response = $I->sendDelete('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'DELETE __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function optionsFooTest(ApiTester $I)
@@ -63,7 +64,7 @@ class PathFooCest
         $response = $I->sendOptions('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'OPTIONS __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function headFooTest(ApiTester $I)
@@ -72,6 +73,16 @@ class PathFooCest
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendHead('/foo');
         $I->seeResponseCodeIs(501);
+    }
+
+    public function traceFooTest(ApiTester $I)
+    {
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+        $response = $I->send('TRACE', '/foo');
+        $I->seeResponseCodeIs(501);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function notFoundTest(ApiTester $I)

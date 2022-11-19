@@ -13,7 +13,6 @@ paths:
 #      - Testserver\Middleware\outgoing\OutgoingMiddleware2
     get:
       summary: Test service method
-#      description: No parameters or body, empty response
       tags:
         - Testing
       operationId: Testserver\Handlers\InvokeHandler
@@ -214,3 +213,5 @@ components:
   x-middleware:
     - Testserver\Middleware\outgoing\OutgoingMiddleware4
     - Testserver\Middleware\outgoing\OutgoingMiddleware5
+    - Testserver\Middleware\incoming\IncomingMiddleware1
+    - Testserver\Middleware\incoming\IncomingMiddleware2

@@ -5,13 +5,18 @@ declare(strict_types=1);
 use Slim\App;
 
 function slim4ConfigureRoutes(App $slimApp) {
-    $slimApp->map(['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/foo', 'Testserver\Handlers\InvokeHandler');
+    $slimApp->map(['GET', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/foo', 'Testserver\Handlers\InvokeHandler');
     $slimApp->map(['POST'], '/foo', 'Testserver\Handlers\InvokeHandler')
             ->add('Testserver\Middleware\outgoing\OutgoingMiddleware3');
-    $slimApp->map(['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/bar', 'Testserver\Handlers\InvokeHandler');
+    $slimApp->map(['PUT'], '/foo', 'Testserver\Handlers\PutPatchHandler:put');
+    $slimApp->map(['PATCH'], '/foo', 'Testserver\Handlers\PutPatchHandler:patch');
+
+    $slimApp->map(['GET', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE'], '/bar', 'Testserver\Handlers\InvokeHandler');
     $slimApp->map(['POST'], '/bar', 'Testserver\Handlers\InvokeHandler')
             ->add('Testserver\Middleware\outgoing\OutgoingMiddleware1')
             ->add('Testserver\Middleware\outgoing\OutgoingMiddleware2');
+    $slimApp->map(['PUT'], '/bar', 'Testserver\Handlers\PutPatchHandler:put');
+    $slimApp->map(['PATCH'], '/bar', 'Testserver\Handlers\PutPatchHandler:patch');
 }
 
 /** Future Development

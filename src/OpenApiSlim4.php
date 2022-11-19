@@ -79,10 +79,13 @@ class OpenApiSlim4 implements OpenApiConfigurationInterface
     protected function configureSlimRoutes(): bool
     {
         foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
-            foreach ($OpenApiPathData as $httpMethod => $handler) {
-                $route = $this->slimApp->map([strtoupper($httpMethod)], $path, $handler);
-                #$route->add('Testserver\Middleware\outgoing\PathMiddleware1');
-                #$route->add('Testserver\Middleware\outgoing\PathMiddleware2');
+            foreach ($OpenApiPathData as $httpMethod => $configuration) {
+                $route = $this->slimApp->map([strtoupper($httpMethod)], $path, $configuration['operationId']);
+                if (isset($configuration['x-middleware'])) {
+                    foreach ($configuration['x-middleware'] as $middleware) {
+                        $route->add($middleware);
+                    }
+                }
             }
         }
 
@@ -118,7 +121,12 @@ class OpenApiSlim4 implements OpenApiConfigurationInterface
         foreach ($openApiPaths as $path => $pathConfiguration) {
             $httpMethods = $pathConfiguration->getOperations();
             foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
-                $this->pathConfigurationData[$path][$httpMethod] = $pathMethodConfiguration->operationId;
+                $this->pathConfigurationData[$path][$httpMethod]['operationId'] = $pathMethodConfiguration->operationId;
+                if (isset($pathMethodConfiguration->{'x-middleware'})) {
+                    foreach ($pathMethodConfiguration->{'x-middleware'} as $middleware) {
+                        $this->pathConfigurationData[$path][$httpMethod]['x-middleware'][] = $middleware;
+                    }
+                }
             }
         }
     }

@@ -10,68 +10,78 @@ class PathBarCest
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendGet('bar');
+        $response = $I->sendGet('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'GET __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function postBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendPost('bar');
+        $response = $I->sendPost('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'POST __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function putBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendPut('bar');
+        $response = $I->sendPut('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'PUT handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\PutPatchHandler::put']);
     }
 
     public function patchBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendPatch('bar');
+        $response = $I->sendPatch('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'PATCH handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\PutPatchHandler::patch']);
     }
 
     public function deleteBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendDelete('bar');
+        $response = $I->sendDelete('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'DELETE __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function optionsBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendOptions('bar');
+        $response = $I->sendOptions('/bar');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(['data' => 'OPTIONS __invoke handler']);
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function headBarTest(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendHead('bar');
+        $response = $I->sendHead('/bar');
         $I->seeResponseCodeIs(501);
+    }
+
+    public function traceBarTest(ApiTester $I)
+    {
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+        $response = $I->send('TRACE', '/bar');
+        $I->seeResponseCodeIs(501);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
     }
 
     public function notFoundTest(ApiTester $I)

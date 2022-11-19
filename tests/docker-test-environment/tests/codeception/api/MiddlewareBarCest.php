@@ -8,7 +8,10 @@ class MiddlewareBarCest
     
     public function getBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendGet('/bar');
@@ -16,12 +19,15 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function postBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1', 'PathMiddleware2', 'PathMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware1', 'OutgoingMiddleware2', 'OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPost('/bar');
@@ -29,12 +35,15 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function putBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPut('/bar');
@@ -42,12 +51,15 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function patchBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendPatch('/bar');
@@ -55,12 +67,15 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function deleteBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendDelete('/bar');
@@ -68,12 +83,15 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function optionsBarTest(ApiTester $I)
     {
-        $expectedMessage = ['GlobalMiddleware3', 'GlobalMiddleware2', 'GlobalMiddleware1'];
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendOptions('/bar');
@@ -81,15 +99,37 @@ class MiddlewareBarCest
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($expectedMessage);
-        $I->assertTrue($expectedMessage === $response['message'], 'Unexpected Middleware Message');
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function headBarTest(ApiTester $I)
     {
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $response = $I->sendHead('/bar');
         $I->seeResponseCodeIs(501);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson($expectedMessage);
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
+    }
+
+    public function traceBarTest(ApiTester $I)
+    {
+        $expectedMessage = [
+            'incoming' => ['IncomingMiddleware2', 'IncomingMiddleware1'],
+            'outgoing' => ['OutgoingMiddleware4', 'OutgoingMiddleware5']
+        ];
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+        $response = $I->send('TRACE', '/bar');
+        $I->seeResponseCodeIs(501);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson($expectedMessage);
+        $I->assertTrue($expectedMessage === $response['middleware'], 'Unexpected Middleware Message');
     }
 
     public function notFoundTest(ApiTester $I)
