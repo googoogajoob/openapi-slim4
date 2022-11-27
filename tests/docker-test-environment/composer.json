@@ -11,7 +11,8 @@
         "googoogajoob/openapi-slim4": "dev-main",
         "slim/psr7": "^1.5",
         "php-di/php-di": "^6.4",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "monolog/monolog": "^3.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",

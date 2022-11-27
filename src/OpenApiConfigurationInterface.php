@@ -19,5 +19,6 @@ interface OpenApiConfigurationInterface
      *
      * @return bool true if the configuration is successful, false otherwise
      */
-    public function configureSlimFramework(): bool;
+    public function configureFrameworkFromFile(): bool;
+    public function configureFrameworkFromReader(): bool;
 }

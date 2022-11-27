@@ -8,6 +8,7 @@ actor_suffix: Tester
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+#        - Codeception\Extension\Logger
 settings:
     shuffle: false
     lint: true

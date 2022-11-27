@@ -8,7 +8,8 @@ use cebe\openapi\spec\OpenApi;
 use Slim\App;
 use Psr\Log\LoggerInterface;
 
-class OpenApiSlim4 implements OpenApiConfigurationInterface
+#class OpenApiSlim4 implements OpenApiConfigurationInterface
+class OpenApiSlim4
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
     protected OpenApi $openApi;

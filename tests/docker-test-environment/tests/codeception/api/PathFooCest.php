@@ -11,7 +11,7 @@ class PathFooCest
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
-        $response = $I->sendGet('/foo');
+        $I->sendGet('/foo');
         $I->seeResponseCodeIs(501);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(['handler' => 'Testserver\Handlers\InvokeHandler::__invoke']);
