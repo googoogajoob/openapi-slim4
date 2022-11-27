@@ -8,8 +8,7 @@ use cebe\openapi\spec\OpenApi;
 use Slim\App;
 use Psr\Log\LoggerInterface;
 
-#class OpenApiSlim4 implements OpenApiConfigurationInterface
-class OpenApiSlim4
+class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
     protected OpenApi $openApi;
@@ -20,9 +19,9 @@ class OpenApiSlim4
 
     /**
      * @param Reader $OpenApi
-     * @return OpenApiConfigurationInterface
+     * @return OpenApiSlim4ConfigurationInterface
      */
-#    public function setOpenApi(Reader $OpenApi): OpenApiConfigurationInterface
+#    public function setOpenApi(Reader $OpenApi): OpenApiSlim4ConfigurationInterface
 #    {
 #        $this->OpenApi = $OpenApi;
 #
@@ -31,9 +30,9 @@ class OpenApiSlim4
 
     /**
      * @param App $slimApp
-     * @return OpenApiConfigurationInterface
+     * @return OpenApiSlim4ConfigurationInterface
      */
-#    public function setSlimApp(App $slimApp): OpenApiConfigurationInterface
+#    public function setSlimApp(App $slimApp): OpenApiSlim4ConfigurationInterface
 #    {
 #        $this->slimApp = $slimApp;
 #
@@ -42,9 +41,9 @@ class OpenApiSlim4
 
     /**
      * @param LoggerInterface $logger
-     * @return OpenApiConfigurationInterface
+     * @return OpenApiSlim4ConfigurationInterface
      */
-#    public function setLogger(LoggerInterface $logger): OpenApiConfigurationInterface
+#    public function setLogger(LoggerInterface $logger): OpenApiSlim4ConfigurationInterface
 #    {
 #        $this->logger = $logger;
 #
@@ -52,14 +51,22 @@ class OpenApiSlim4
 #    }
 
     /**
-     * OpenApiSlim constructor.
-     * @param Reader $openApiDefinition
+     * @param String|Reader $OpenApiDefinition
      * @param App $slimApp
-     * @param LoggerInterface $logger
+     * @param LoggerInterface|null $logger
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \cebe\openapi\exceptions\IOException
+     * @throws \cebe\openapi\exceptions\TypeErrorException
+     * @throws \cebe\openapi\exceptions\UnresolvableReferenceException
      */
-    public function __construct(App $slimApp, ?LoggerInterface $logger = null)
+    public function __construct(?String|?Reader $OpenApiDefinition = null, ?App $slimApp = null, ?LoggerInterface $logger = null)
     {
-        $this->openApi = Reader::readFromYamlFile($slimApp->getContainer()->get('openApiPath'));
+        if (is_string($OpenApiDefinition)) {
+            $this->openApi = Reader::readFromYamlFile($slimApp->getContainer()->get('openApiPath'));
+        } else {
+            $this->openApi = $OpenApiDefinition;
+        }
         $this->slimApp = $slimApp;
         $this->logger = $logger;
     }
@@ -67,7 +74,7 @@ class OpenApiSlim4
     /**
      * @return bool
      */
-    public function configureSlimFramework(): bool
+    public function configureFramework(): bool
     {
         $this->getPathConfigurationData();
 
