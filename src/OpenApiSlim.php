@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace OpenApiSlim4;
 
@@ -14,31 +14,34 @@ use Psr\Log\LoggerInterface;
 class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 {
     const PERMITTED_HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
+    protected ?App $SlimApplication = null;
     protected ?LoggerInterface $logger = null;
-    protected ?OpenApi $openApi = null;
+    protected string|OpenApi|null $openApi = null;
     protected array $pathConfigurationData = [];
-    protected ?App $slimApp = null;
     protected bool $throwValidationException = false;
     protected array $validationMessages = [];
 
     /**
-     * All Class variables can be set via the constructor or through setters
+     * Class properties can be set via the constructor or through setters
      *
      * @param LoggerInterface|null $logger
-     * @param App|null $slimApp
+     * @param App|null $slimApplication
      * @param string|OpenApi|null $openApi
      * @param bool|null $throwValidationException
      * @throws IOException
      * @throws TypeErrorException
      * @throws UnresolvableReferenceException
      */
-    public function __construct(?LoggerInterface $logger = null, ?App $slimApp = null, string|OpenApi|null $openApi = null, bool $throwValidationException = null)
+    public function __construct(?LoggerInterface $logger = null,
+                                ?App $slimApplication = null,
+                                string|OpenApi|null $openApi = null,
+                                ?bool $throwValidationException = null)
     {
         if (!is_null($logger)) {
             $this->setLogger($logger);
         }
-        if (!is_null($slimApp)) {
-            $this->setSlimApp($slimApp);
+        if (!is_null($slimApplication)) {
+            $this->setSlimApplication($slimApplication);
         }
         if (!is_null($openApi)) {
             $this->setOpenApi($openApi);
@@ -49,17 +52,17 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Validate input values and attempt the slim configuration, if the configuration fails validity is false
+     *
      * @return bool
      * @throws OpenApiSlim4Exception
      */
     public function configureFramework(): bool
     {
-        $isValid = $this->validateClassParameters();
-        $isValid = $isValid && $this->validateOpeanApiDefinition();
-        $isValid = $isValid && $this->getPathConfigurationData();
-        if ($isValid) {
-            return $this->configureSlimRoutes() && $this->configureSlimGlobalMiddleware();
-        } elseif ($this->throwValidationException) {
+        $isValid = $this->validate();
+        $isValid = $isValid && $this->configureSlimRoutes();
+        $isValid = $isValid && $this->configureSlimGlobalMiddleware();
+        if (!$isValid && $this->throwValidationException) {
             throw new OpenApiSlim4Exception(implode(PHP_EOL, $this->validationMessages));
         }
 
@@ -73,7 +76,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     {
         if (isset($this->openApi->components->{'x-middleware'})) {
             foreach ($this->openApi->components->{'x-middleware'} as $globalMiddleware) {
-                $this->slimApp->add($globalMiddleware);
+                $this->SlimApplication->add($globalMiddleware);
             }
         }
 
@@ -87,7 +90,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     {
         foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
             foreach ($OpenApiPathData as $httpMethod => $configuration) {
-                $route = $this->slimApp->map([strtoupper($httpMethod)], $path, $configuration['operationId']);
+                $route = $this->SlimApplication->map([strtoupper($httpMethod)], $path, $configuration['operationId']);
                 if (isset($configuration['x-middleware'])) {
                     foreach ($configuration['x-middleware'] as $middleware) {
                         $route->add($middleware);
@@ -100,18 +103,11 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    protected function getPathConfigurationData(): void
+    protected function getPathConfigurationData(): bool
     {
-        if (count($this->pathConfigurationData)) {
-            if ($this->logger) {
-                $this->logger->debug('pathConfigurationData already defined');
-            }
-        } else {
-            $openApiPaths = $this->openApi->paths->getPaths();
-        }
-        foreach ($openApiPaths as $path => $pathConfiguration) {
+        foreach ($this->openApi->paths->getPaths() as $path => $pathConfiguration) {
             $httpMethods = $pathConfiguration->getOperations();
             foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
                 $this->pathConfigurationData[$path][$httpMethod]['operationId'] = $pathMethodConfiguration->operationId;
@@ -122,6 +118,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
                 }
             }
         }
+
+        return false;
     }
 
     /**
@@ -164,13 +162,18 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         return $this;
     }
 
+    protected function resolveOpenApiObject(): OpenApiSlim4ConfigurationInterface
+    {
+
+    }
+
     /**
-     * @param App $slimApp
+     * @param App $SlimApplication
      * @return OpenApiSlim4ConfigurationInterface
      */
-    public function setSlimApp(App $slimApp): OpenApiSlim4ConfigurationInterface
+    public function setSlimApplication(App $SlimApplication): OpenApiSlim4ConfigurationInterface
     {
-        $this->slimApp = $slimApp;
+        $this->SlimApplication = $SlimApplication;
 
         return $this;
     }
@@ -189,23 +192,21 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
-     * Validate all required components
-     *
      * @return bool
      */
     protected function validate(): bool
     {
-        #$this->logger->info('Performing validation');
+        $isValid = $this->validateClassProperties();
+        $isValid = $isValid && $this->validateOpenApiDefinition();
+        $isValid = $isValid && $this->validateSlimApplication();
+        $isValid = $isValid && $this->getPathConfigurationData();
 
-        #$this->logger->debug('Validate Slim Version');
-        if (substr($this->slimApp::VERSION, 0, 1) != '4') {
-            #$this->logger->error('Slim Version 4.*.* is required. Given Version is: ' . $this->slimApp::VERSION);
+        return $isValid;
+    }
 
-            return false;
-        }
-
-        #$this->logger->debug('Validate Paths (Routes)');
-        #$this->getPathConfigurationData();
+    /*
+    protected function validate(): bool
+    {
         if (!count($this->pathConfigurationData)) {
             $this->logger->error('No paths(routes) defined');
 
@@ -235,19 +236,65 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             }
         }
 
-        #$this->logger->info('Validation successful');
-
         return true;
     }
-#    protected function validateOpenApiDefinition(): bool
-#    {
-#        #$this->logger->debug('Validate OpenApiDefinition');
-#        if (!$this->OpenApi instanceof Reader) {
-#            #$this->logger->error('OpenApiDefinition must be of type: cebe\openapi\Reader');
-#
-#            return false;
-#        }
-#
-#        return false;
-#    }
+    */
+
+    /**
+     * Validate that the necessary class properties have been set
+     *
+     * @return bool
+     */
+    protected function validateClassProperties(): bool
+    {
+        $returnValue = true;
+        if (!$this->SlimApplication) {
+            $this->validationMessages[] ='Slim Application is not defined';
+            $returnValue = false;
+        }
+        if (!$this->openApi) {
+            $returnValue = false;
+            $this->validationMessages[] ='Openapi object is not defined';
+        }
+
+        return $returnValue;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function validateOpenApiDefinition(): bool
+    {
+        $returnValue = true;
+        if (!$this->openApi instanceof Reader) {
+            $returnValue = false;
+            $this->validationMessages[] = 'OpenApiDefinition must be of type: ' . Reader::class;
+        }
+
+        return $returnValue;
+    }
+
+    /**
+     * Validate that the required version of Slim is being used
+     *
+     * @return bool
+     */
+    protected function validateSlimApplication(): bool
+    {
+        $returnValue = true;
+        if (!str_starts_with($this->SlimApplication::VERSION, '4')) {
+            $this->validationMessages[] ='Slim Version 4 is required';
+            $returnValue = false;
+        }
+
+        return $returnValue;
+    }
 }
+
+/**
+ * ToDo:
+ * Catch exceptions from CeBe and transfer them to my Exceptions
+ * Catch exceptions from Slim and transfer them to my Exceptions
+ */
+
+
