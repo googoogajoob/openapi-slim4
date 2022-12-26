@@ -3,13 +3,15 @@ declare(strict_types = 1);
 
 namespace OpenApiSlim4;
 
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\Reader;
+use cebe\openapi\json\InvalidJsonPointerSyntaxException;
 use cebe\openapi\exceptions\IOException;
 use cebe\openapi\exceptions\TypeErrorException;
 use cebe\openapi\exceptions\UnresolvableReferenceException;
-use Slim\App;
+use cebe\openapi\Reader;
+use cebe\openapi\spec\OpenApi;
+use Exception;
 use Psr\Log\LoggerInterface;
+use Slim\App;
 
 class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 {
@@ -24,17 +26,17 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     /**
      * Class properties can be set via the constructor or through setters
      *
-     * @param LoggerInterface|null $logger
+     * @param string|OpenApi|null $openApi //Openapi File (json|yaml) | cebe\openapi\Reader
      * @param App|null $slimApplication
-     * @param string|OpenApi|null $openApi
-     * @param bool|null $throwValidationException
+     * @param LoggerInterface|null $logger // no logging output  when null
+     * @param bool|null $throwValidationException // throw an exception if validation errors have occurred
      * @throws IOException
      * @throws TypeErrorException
      * @throws UnresolvableReferenceException
      */
-    public function __construct(?LoggerInterface $logger = null,
+    public function __construct(string|OpenApi|null $openApi = null,
                                 ?App $slimApplication = null,
-                                string|OpenApi|null $openApi = null,
+                                ?LoggerInterface $logger = null,
                                 ?bool $throwValidationException = null)
     {
         if (!is_null($logger)) {
@@ -74,13 +76,19 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      */
     protected function configureSlimGlobalMiddleware(): bool
     {
-        if (isset($this->openApi->components->{'x-middleware'})) {
-            foreach ($this->openApi->components->{'x-middleware'} as $globalMiddleware) {
-                $this->SlimApplication->add($globalMiddleware);
+        $returnValue = true;
+        try {
+            if (isset($this->openApi->components->{'x-middleware'})) {
+                foreach ($this->openApi->components->{'x-middleware'} as $globalMiddleware) {
+                    $this->SlimApplication->add($globalMiddleware);
+                }
             }
+        } catch (Exception $exception) {
+            $returnValue = false;
+            $this->validationMessages[] = $exception->getMessage();
         }
 
-        return true;
+        return $returnValue;
     }
 
     /**
@@ -88,18 +96,24 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      */
     protected function configureSlimRoutes(): bool
     {
-        foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
-            foreach ($OpenApiPathData as $httpMethod => $configuration) {
-                $route = $this->SlimApplication->map([strtoupper($httpMethod)], $path, $configuration['operationId']);
-                if (isset($configuration['x-middleware'])) {
-                    foreach ($configuration['x-middleware'] as $middleware) {
-                        $route->add($middleware);
+        $returnValue = true;
+        try {
+            foreach ($this->pathConfigurationData as $path => $OpenApiPathData) {
+                foreach ($OpenApiPathData as $httpMethod => $configuration) {
+                    $route = $this->SlimApplication->map([strtoupper($httpMethod)], $path, $configuration['operationId']);
+                    if (isset($configuration['x-middleware'])) {
+                        foreach ($configuration['x-middleware'] as $middleware) {
+                            $route->add($middleware);
+                        }
                     }
                 }
             }
+        } catch (Exception $exception) {
+            $returnValue = false;
+            $this->validationMessages[] = $exception->getMessage();
         }
 
-        return true;
+        return $returnValue;
     }
 
     /**
@@ -107,19 +121,25 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      */
     protected function getPathConfigurationData(): bool
     {
-        foreach ($this->openApi->paths->getPaths() as $path => $pathConfiguration) {
-            $httpMethods = $pathConfiguration->getOperations();
-            foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
-                $this->pathConfigurationData[$path][$httpMethod]['operationId'] = $pathMethodConfiguration->operationId;
-                if (isset($pathMethodConfiguration->{'x-middleware'})) {
-                    foreach ($pathMethodConfiguration->{'x-middleware'} as $middleware) {
-                        $this->pathConfigurationData[$path][$httpMethod]['x-middleware'][] = $middleware;
+        $returnValue = true;
+        try {
+            foreach ($this->openApi->paths->getPaths() as $path => $pathConfiguration) {
+                $httpMethods = $pathConfiguration->getOperations();
+                foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
+                    $this->pathConfigurationData[$path][$httpMethod]['operationId'] = $pathMethodConfiguration->operationId;
+                    if (isset($pathMethodConfiguration->{'x-middleware'})) {
+                        foreach ($pathMethodConfiguration->{'x-middleware'} as $middleware) {
+                            $this->pathConfigurationData[$path][$httpMethod]['x-middleware'][] = $middleware;
+                        }
                     }
                 }
             }
+        } catch (Exception $exception) {
+            $returnValue = false;
+            $this->validationMessages[] = $exception->getMessage();
         }
 
-        return false;
+        return $returnValue;
     }
 
     /**
@@ -129,6 +149,29 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     protected function isHttpMethodPermitted(string $httpMethod): bool
     {
         return in_array(strtoupper($httpMethod), self::PERMITTED_HTTP_METHODS);
+    }
+
+    /**
+     * Read Openapi definition from a Json or Yaml file.
+     *
+     * @return OpenApiSlim4ConfigurationInterface
+     * @throws IOException
+     * @throws TypeErrorException
+     * @throws UnresolvableReferenceException
+     * @throws InvalidJsonPointerSyntaxException
+     */
+    protected function resolveOpenApiObject(): OpenApiSlim4ConfigurationInterface
+    {
+        if (is_string($this->openApi)) {
+            $extension = strtoupper(substr(strrchr($this->openApi, '.'), 1));
+            if ($extension === 'JSON') {
+                $this->openApi = Reader::readFromJsonFile($this->openApi);
+            } else {
+                $this->openApi = Reader::readFromYamlFile($this->openApi);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -153,18 +196,9 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      */
     public function setOpenApi(string|OpenApi $openApi): OpenApiSlim4ConfigurationInterface
     {
-        if (is_string($openApi)) {
-            $this->openApi = Reader::readFromYamlFile($openApi);
-        } else {
-            $this->openApi = $openApi;
-        }
+        $this->openApi = $openApi;
 
         return $this;
-    }
-
-    protected function resolveOpenApiObject(): OpenApiSlim4ConfigurationInterface
-    {
-
     }
 
     /**
@@ -179,7 +213,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
-     * A switch which determines if an exception should be thrown when the validation is unsuccessful
+     * Sets a switch which determines if an exception should be thrown when the validation is unsuccessful
      *
      * @param bool $throwValidationException
      * @return OpenApiSlim4ConfigurationInterface
@@ -248,11 +282,11 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     protected function validateClassProperties(): bool
     {
         $returnValue = true;
-        if (!$this->SlimApplication) {
+        if (!is_null($this->SlimApplication)) {
             $this->validationMessages[] ='Slim Application is not defined';
             $returnValue = false;
         }
-        if (!$this->openApi) {
+        if (!is_null($this->openApi)) {
             $returnValue = false;
             $this->validationMessages[] ='Openapi object is not defined';
         }
@@ -261,14 +295,29 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Validate the following aspects of the openapi definition:
+     *   1) Is the input file (json|yaml) readable
+     *   2) Can an Object of type Reader be created
+     *   1) Is the Openapi definition valid
+     *
      * @return bool
      */
     protected function validateOpenApiDefinition(): bool
     {
         $returnValue = true;
-        if (!$this->openApi instanceof Reader) {
+        try {
+            $this->resolveOpenApiObject();
+        } catch (TypeErrorException | UnresolvableReferenceException | IOException | InvalidJsonPointerSyntaxException $exception) {
+            $returnValue = false;
+            $this->validationMessages[] = $exception->getMessage();
+        }
+        if ($returnValue && !$this->openApi instanceof Reader) {
             $returnValue = false;
             $this->validationMessages[] = 'OpenApiDefinition must be of type: ' . Reader::class;
+        }
+        if ($returnValue && !$this->openApi->validate()) {
+            $returnValue = false;
+            $this->validationMessages[] = implode(PHP_EOL, $this->openApi->getErrors());
         }
 
         return $returnValue;
