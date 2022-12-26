@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace OpenApiSlim4;
 
-use cebe\openapi\json\InvalidJsonPointerSyntaxException;
 use cebe\openapi\exceptions\IOException;
 use cebe\openapi\exceptions\TypeErrorException;
 use cebe\openapi\exceptions\UnresolvableReferenceException;
+use cebe\openapi\json\InvalidJsonPointerSyntaxException;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
 use Exception;
@@ -25,14 +25,13 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 
     /**
      * Class properties can be set via the constructor or through setters
+     *   Required: $openApi and $slimApplication
+     *   Optional: $logger and $throwValidationException
      *
      * @param string|OpenApi|null $openApi //Openapi File (json|yaml) | cebe\openapi\Reader
      * @param App|null $slimApplication
      * @param LoggerInterface|null $logger // no logging output  when null
-     * @param bool|null $throwValidationException // throw an exception if validation errors have occurred
-     * @throws IOException
-     * @throws TypeErrorException
-     * @throws UnresolvableReferenceException
+     * @param bool|null $throwValidationException // throw an OpenApiSlim4Exception if validation errors have occurred
      */
     public function __construct(string|OpenApi|null $openApi = null,
                                 ?App $slimApplication = null,
@@ -72,6 +71,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Configure slim global middleware based on the openapi definition
+     *
      * @return bool
      */
     protected function configureSlimGlobalMiddleware(): bool
@@ -92,6 +93,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Configure slim routes/paths based on the openapi definition
+     *
      * @return bool
      */
     protected function configureSlimRoutes(): bool
@@ -117,6 +120,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Obtain relevant configuration data for Slim from the openapi definition
+     *
      * @return bool
      */
     protected function getPathConfigurationData(): bool
@@ -126,6 +131,9 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             foreach ($this->openApi->paths->getPaths() as $path => $pathConfiguration) {
                 $httpMethods = $pathConfiguration->getOperations();
                 foreach ($httpMethods as $httpMethod => $pathMethodConfiguration) {
+                    if (!$this->isHttpMethodPermitted($httpMethod)) {
+                        throw new OpenApiSlim4Exception('Method not permitted: ' . $httpMethod);
+                    }
                     $this->pathConfigurationData[$path][$httpMethod]['operationId'] = $pathMethodConfiguration->operationId;
                     if (isset($pathMethodConfiguration->{'x-middleware'})) {
                         foreach ($pathMethodConfiguration->{'x-middleware'} as $middleware) {
@@ -175,6 +183,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Set Logger
+     *
      * @param LoggerInterface $logger
      * @return OpenApiSlim4ConfigurationInterface
      */
@@ -188,11 +198,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     /**
      * Set the source of the OpenApi Configuration Definition
      *
-     * @param String|OpenApi $openApi
+     * @param string|OpenApi $openApi
      * @return OpenApiSlim4ConfigurationInterface
-     * @throws IOException
-     * @throws TypeErrorException
-     * @throws UnresolvableReferenceException
      */
     public function setOpenApi(string|OpenApi $openApi): OpenApiSlim4ConfigurationInterface
     {
@@ -213,7 +220,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
-     * Sets a switch which determines if an exception should be thrown when the validation is unsuccessful
+     * Set a switch which determines if an exception should be thrown when the validation is unsuccessful
      *
      * @param bool $throwValidationException
      * @return OpenApiSlim4ConfigurationInterface
@@ -226,6 +233,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * Validate all required components
+     *
      * @return bool
      */
     protected function validate(): bool
@@ -237,42 +246,6 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 
         return $isValid;
     }
-
-    /*
-    protected function validate(): bool
-    {
-        if (!count($this->pathConfigurationData)) {
-            $this->logger->error('No paths(routes) defined');
-
-            return false;
-        }
-
-        foreach ($this->pathConfigurationData as $path => $pathConfigurationData) {
-            foreach ($pathConfigurationData as $httpMethod => $handler) {
-                if (!$this->isHttpMethodPermitted($httpMethod)) {
-                    #$this->logger->error('Http Method is not allowed: ' . $httpMethod);
-
-                    return false;
-                }
-                $handlerParts = explode(':', $handler);
-                $class = $handlerParts[0];
-                if (!class_exists($class)) {
-                    #$this->logger->error('Handler Class does not exist: ' . $class);
-
-                    return false;
-                }
-                $classMethod = ($handlerParts[1] ? $handlerParts[1] : '__invoke');
-                if (!method_exists($class, $classMethod)) {
-                    #$this->logger->error('Handler Class Method does not exist: ' . $class . '->' . $classMethod);
-
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-    */
 
     /**
      * Validate that the necessary class properties have been set
@@ -339,11 +312,3 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         return $returnValue;
     }
 }
-
-/**
- * ToDo:
- * Catch exceptions from CeBe and transfer them to my Exceptions
- * Catch exceptions from Slim and transfer them to my Exceptions
- */
-
-
