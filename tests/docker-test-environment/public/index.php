@@ -7,11 +7,9 @@ use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\ErrorHandler;
 use Slim\ResponseEmitter;
-use OpenApiSlim4\OpenApiSlim4;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
-$junk = __DIR__ . '/..';
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/..');
 $dotenv->safeLoad();
 
@@ -36,15 +34,7 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-if ($container->get('nativeSlimConfiguration')) {
-    require __DIR__ . '/../config/slimConfiguration.php';
-    slim4ConfigureRoutes($app);
-#    slim4ConfigureGroupMiddleware($app);  // Future Development
-    slim4ConfigureGlobalMiddleware($app);
-} else {
-    $openApiConfigurator = new OpenApiSlim4($app);
-    $openApiConfigurator->configureFramework();
-}
+require __DIR__ . '/../src/config/slimConfigurationTestOptions.php';
 
 $displayErrorDetails = $container->get('displayErrorDetails');
 $logError = $container->get('logError');
