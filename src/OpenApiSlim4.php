@@ -38,14 +38,14 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
                                 ?LoggerInterface $logger = null,
                                 ?bool $throwValidationException = null)
     {
-        if (!is_null($logger)) {
-            $this->setLogger($logger);
+        if (!is_null($openApi)) {
+            $this->setOpenApi($openApi);
         }
         if (!is_null($slimApplication)) {
             $this->setSlimApplication($slimApplication);
         }
-        if (!is_null($openApi)) {
-            $this->setOpenApi($openApi);
+        if (!is_null($logger)) {
+            $this->setLogger($logger);
         }
         if (!is_null($throwValidationException)) {
             $this->setThrowValidationException($throwValidationException);

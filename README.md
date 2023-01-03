@@ -1,21 +1,25 @@
+# Purpose
+Automatically define the path routing of a slim4 application from an Openapi definition.
+
+**This Includes**
+* Path/Route HTTP-Methods and Handlers
+* Path/Route Middleware
+* Global Middleware
+
 # Installation
-# Purpose 
+
 # Usage
 ## Requirements
 * Php 8.1
 * Slim4
 * An OpenApi Definition
-## Parameters and Options
-|           |Constructor|Setter|Environment Variable|
-|-----------|----|----|----|
-| Slim4 App | ✅ |✅ | |
-| Openapi Definition | | |
+## Parameter Definitions and Dependency Injection Options 
+|                            | Constructor | Setter | Environment Variable | Required | Remarks                                                 |
+|----------------------------|:----------:|:------:|:--------------------:|:----:|---------------------------------------------------------|
+| Slim4 App                  | ✅           |   ✅    |          ❌           |✅|                                                         | 
+| Openapi Definition         | ✅           |   ✅    |          ❌           |✅| Filename option via Environment Variable                |
+| Logging                    | ✅           |   ✅    |          ❔           |❌| Environment Variable Flag. Default false (no logging)   |
+| Throw Validation Exception | ✅           |   ✅    |          ❔           |❌| Environment Variable Flag. Default false (no exception) |
 
 # Development and Testing
-* A Docker Container is used for development.
-* The Docker Container is part of the test architecture: _tests/docker-test-environment/docker-compose.yml_
-
-I need ENV-Options for 
-* OpenApi File Name
-* Exceptions On/Off
-* Logging On/Off
+For testing details see [tests/README.md](./tests/README.md)
