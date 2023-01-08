@@ -17,13 +17,13 @@ This project is intended to be one of many vendor applications included via comp
     * Via an environment variable different versions of PHP can be tested
       * Variable Name: PHP_VERSION
       * Possible Values: 7.4, 8.0, 8.1
-    * Via an environment variable the openapi format in json or yaml can be tested
-      * OPENAPI_FORMAT
-      * Possible Values: yaml, json (case unsensitive). Also, yaml and yml refer to a yaml format 
-    * **ToDo:** other stuff
-    * **ToDo:** Give examples of the scripts
-  * Outside the docker container, i.e. from the project itself, scripts have been written to test the project in various scenarios
-    * **ToDo:** Give examples of the scripts
+    * Via an environment variable a file can be named which contains an openapi definition (yaml and json format)
+      * Possible values via the file extension: yaml|yml, json (case insensitive)
+    * Other Parameters 
+      * **SLIM**: (equals 'SLIM') Define the Slim4 application through conventional php means. Needed, in order to verify this configurator
+      * **JSON**: (Equals 'JSON') Assume json format for the openapi definition
+      * **CLEAN**: (Equals 'CLEAN') Clean/delete the previous test results
+  * The script [run-all-tests.sh](./run-all-tests.sh) uses these parameters to perform its tests
 
 --- **ToDo:** Development stuff follows
 I need ENV-Options for
