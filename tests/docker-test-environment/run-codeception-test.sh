@@ -13,7 +13,7 @@ fi
 
 ENVFILE="/var/www/.env"
 CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
-READABLE_TEST_RESULTS="chown 1000:1000 -R /var/www/tests/codeception/_output"
+MAKE_TEST_RESULTS_READABLE="chown 1000:1000 -R /var/www/tests/codeception/_output"
 
 if [ $1 == "SLIM" ];
 then
@@ -44,4 +44,4 @@ echo $SLIMCONFIG > $ENVFILE
 echo $OPENAPI_FORMAT >> $ENVFILE
 $CODECEPTION run --override "paths: output: tests/codeception/_output/$CONFIG_OPTION"_"$FORMAT_OPTION" -- api
 
-$READABLE_TEST_RESULTS
+$MAKE_TEST_RESULTS_READABLE
