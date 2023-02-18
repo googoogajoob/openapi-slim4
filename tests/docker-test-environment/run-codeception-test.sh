@@ -1,5 +1,67 @@
 #!/bin/bash
 
+#set parameter defaults
+DEFINITION_SOURCE="OPENAPI"
+OPENAPI_FORMAT="YAML"
+CLEAN=0
+
+function print_help {
+  echo "Usage: run_codeception_test.sh [OPTIONS]"
+  echo "Options:"
+  echo "  -h    Display this help message"
+  echo "  -s    Bypass openapi-slim4 (this extension) and use the native Slim4 Definition for routes/paths"
+  echo "  -j    Use JSON format of the OpenApi Definition (default is yaml)"
+  echo "  -c    Clean test results prior to test execution"
+}
+
+function show_parameters {
+  if [ $DEFINITION_SOURCE == "OPENAPI" ]; then
+    echo "Using Openapi Definition as source"
+    if [ $OPENAPI_FORMAT == 'YAML' ]; then
+      echo "Using YAML Openapi format"
+    else
+      echo "Using JSON Openapi format"
+    fi
+  else
+    echo "Using Native Slim4 Definition as source"
+  fi
+  if [ $CLEAN -ne 0 ]; then
+    echo "Clear previous test results"
+  fi
+}
+
+while getopts ":sjch" options; do
+  case ${options} in
+    s )
+      DEFINITION_SOURCE="SLIM4"
+      ;;
+    j )
+      OPENAPI_FORMAT="JSON"
+      ;;
+    c )
+      CLEAN=1
+      ;;
+    h )
+      print_help
+      exit 0
+      ;;
+    \? )
+      echo "Invalid option: -$OPTARG" 1>&2
+      exit 1
+      ;;
+    : )
+      echo "Option -$OPTARG requires an argument." 1>&2
+      exit 1
+      ;;
+    * )
+      echo "Invalid option: -$OPTARG" 1>&2
+      exit 1
+      ;;
+  esac
+done
+show_parameters
+exit
+
 if [ $# -ne 3 ]
   then
     echo "Three arguments required:"
@@ -24,8 +86,7 @@ else
   CONFIG_OPTION="openapiSlim4"
 fi
 
-if [ $2 == "JSON" ];
-then
+if [ $2 == "JSON" ]; then
   OPENAPI_FORMAT="OPENAPI_PATH=/var/www/config/openapi.json"
   FORMAT_OPTION="json"
 else

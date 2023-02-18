@@ -49,4 +49,5 @@ This project is intended to be one of many vendor applications included via comp
 | SLIM      | echo variable       | .env file               | defined or undefined              | Use a native php script for configuring the routes, if defined. Ignores OPENAPI. Used as a comparison control against OpenSpiSlim4   |
 
 # Evaluating Test Results
+//ToDo
 Dude, need to explain how the comparison works
