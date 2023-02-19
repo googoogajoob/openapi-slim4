@@ -5,6 +5,11 @@ DEFINITION_SOURCE="OPENAPI"
 OPENAPI_FORMAT="YAML"
 CLEAN=0
 
+### Set other variables
+ENVFILE="/var/www/.env"
+CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
+MAKE_TEST_RESULTS_READABLE="chown 1000:1000 -R /var/www/tests/codeception/_output"
+
 function print_help {
   echo "Usage: run_codeception_test.sh [OPTIONS]"
   echo "Options:"
@@ -59,47 +64,34 @@ while getopts ":sjch" options; do
       ;;
   esac
 done
+
 show_parameters
-exit
 
-if [ $# -ne 3 ]
-  then
-    echo "Three arguments required:"
-    echo "   SLIM for native slim (otherwise openapi-slim4)"
-    echo "   JSON openapi format (otherwise yaml)"
-    echo "   CLEAN clear output results (otherwise no cleaning)"
-    exit
-fi
-
-### Initialize Variables
-
-ENVFILE="/var/www/.env"
-CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
-MAKE_TEST_RESULTS_READABLE="chown 1000:1000 -R /var/www/tests/codeception/_output"
-
-if [ $1 == "SLIM" ];
-then
-  SLIMCONFIG="NATIVE_SLIM_CONFIG=1"
-  CONFIG_OPTION="slim"
-else
+if [ $DEFINITION_SOURCE == "OPENAPI" ]; then
   SLIMCONFIG="NATIVE_SLIM_CONFIG=0"
   CONFIG_OPTION="openapiSlim4"
-fi
-
-if [ $2 == "JSON" ]; then
-  OPENAPI_FORMAT="OPENAPI_PATH=/var/www/config/openapi.json"
-  FORMAT_OPTION="json"
 else
+  SLIMCONFIG="NATIVE_SLIM_CONFIG=1"
+  CONFIG_OPTION="slim"
+fi
+if [ $OPENAPI_FORMAT == 'YAML' ]; then
   OPENAPI_FORMAT="OPENAPI_PATH=/var/www/config/openapi.yml"
   FORMAT_OPTION="yaml"
+else
+  OPENAPI_FORMAT="OPENAPI_PATH=/var/www/config/openapi.json"
+  FORMAT_OPTION="json"
 fi
-
-#### Run Tests
-
-if [ $3 == "CLEAN" ];
-then
+if [ $CLEAN -ne 0 ]; then
+  echo "Dude, I'm cleaning up..."
   $CODECEPTION clean
+else
+  echo "Ich lass den Dreck bleiben, tschüß..."
 fi
+
+#exit 1 "Not finished yet, needs some ToDos"
+exit 1
+
+#### Run the Tests
 
 echo $SLIMCONFIG > $ENVFILE
 echo $OPENAPI_FORMAT >> $ENVFILE
