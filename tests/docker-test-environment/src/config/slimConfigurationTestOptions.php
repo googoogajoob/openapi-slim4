@@ -9,7 +9,7 @@ if ($container->get('nativeSlimConfiguration')) {
 #    slim4ConfigureGroupMiddleware($app);  // Future Development
     slim4ConfigureGlobalMiddleware($app);
 } else {
-    $openApiConfigurator = new OpenApiSlim4('/var/www/config/openapi.yml', $app);
+    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app);
     $openApiConfigurator->configureFramework();
 }
 
