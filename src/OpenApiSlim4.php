@@ -255,11 +255,11 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     protected function validateClassProperties(): bool
     {
         $returnValue = true;
-        if (!is_null($this->SlimApplication)) {
+        if (is_null($this->SlimApplication)) {
             $this->validationMessages[] ='Slim Application is not defined';
             $returnValue = false;
         }
-        if (!is_null($this->openApi)) {
+        if ($returnValue && is_null($this->openApi)) {
             $returnValue = false;
             $this->validationMessages[] ='Openapi object is not defined';
         }
@@ -284,7 +284,8 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             $returnValue = false;
             $this->validationMessages[] = $exception->getMessage();
         }
-        if ($returnValue && !$this->openApi instanceof Reader) {
+#        if ($returnValue && !$this->openApi instanceof Reader) {
+        if ($returnValue && !$this->openApi instanceof OpenApi) {
             $returnValue = false;
             $this->validationMessages[] = 'OpenApiDefinition must be of type: ' . Reader::class;
         }

@@ -7,41 +7,22 @@
     },
     "servers": [
         {
-            "url": "https:\/\/localhost"
+            "url": "https://localhost"
         }
     ],
     "paths": {
-        "\/foo": {
+        "/foo": {
             "get": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\PutPatchHandler:put",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -51,16 +32,16 @@
                 }
             },
             "post": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -72,55 +53,17 @@
                     "Testserver\\Middleware\\outgoing\\OutgoingMiddleware3"
                 ]
             },
-            "delete": {
+            "put": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "operationId": "Testserver\\Handlers\\PutPatchHandler:put",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "options": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "head": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -130,16 +73,16 @@
                 }
             },
             "patch": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\PutPatchHandler:patch",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -148,17 +91,55 @@
                     }
                 }
             },
-            "trace": {
+            "delete": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "options": {
+                "summary": "Test service method",
+                "tags": [
+                    "Testing"
+                ],
+                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "responses": {
+                    "501": {
+                        "description": "Not implemented",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "head": {
+                "summary": "Test service method",
+                "tags": [
+                    "Testing"
+                ],
+                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "responses": {
+                    "501": {
+                        "description": "Not implemented",
+                        "content": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -168,37 +149,18 @@
                 }
             }
         },
-        "\/bar": {
+        "/bar": {
             "get": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\PutPatchHandler:put",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -208,16 +170,16 @@
                 }
             },
             "post": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -230,55 +192,17 @@
                     "Testserver\\Middleware\\outgoing\\OutgoingMiddleware2"
                 ]
             },
-            "delete": {
+            "put": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "operationId": "Testserver\\Handlers\\PutPatchHandler:put",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "options": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "head": {
-                "tags": [
-                    "Testing"
-                ],
-                "summary": "Test service method",
-                "operationId": "Testserver\\Handlers\\InvokeHandler",
-                "responses": {
-                    "501": {
-                        "description": "Not implemented",
-                        "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -288,16 +212,16 @@
                 }
             },
             "patch": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\PutPatchHandler:patch",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -306,17 +230,55 @@
                     }
                 }
             },
-            "trace": {
+            "delete": {
+                "summary": "Test service method",
                 "tags": [
                     "Testing"
                 ],
-                "summary": "Test service method",
                 "operationId": "Testserver\\Handlers\\InvokeHandler",
                 "responses": {
                     "501": {
                         "description": "Not implemented",
                         "content": {
-                            "application\/json": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "options": {
+                "summary": "Test service method",
+                "tags": [
+                    "Testing"
+                ],
+                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "responses": {
+                    "501": {
+                        "description": "Not implemented",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "head": {
+                "summary": "Test service method",
+                "tags": [
+                    "Testing"
+                ],
+                "operationId": "Testserver\\Handlers\\InvokeHandler",
+                "responses": {
+                    "501": {
+                        "description": "Not implemented",
+                        "content": {
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
