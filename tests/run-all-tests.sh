@@ -12,4 +12,9 @@ docker exec -it docker-test-environment_slim4-test_1 /var/www/run-codeception-te
 echo "Testing openapi-slim4 with yml format ..."
 docker exec -it docker-test-environment_slim4-test_1 /var/www/run-codeception-test.sh -Y > /dev/null
 
+echo
 echo "Tests completed (for results see: docker-test-environment/tests/codeception/_output)"
+echo
+echo "Failed tests contain the word 'fail' in the file name. Here is a list ..."
+find docker-test-environment/tests/codeception/_output -name "*fail*"
+echo
