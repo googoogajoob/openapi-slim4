@@ -20,9 +20,3 @@ if ($container->get('nativeSlimConfiguration')) {
     $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app);
     $openApiConfigurator->configureFramework();
 }
-
-# Testing scenarios and variables
-# DI in constructor or through setters
-# Mocking to test Exceptions
-# JSON YAML
-# Good and bad formatting
