@@ -271,7 +271,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      * Validate the following aspects of the openapi definition:
      *   1) Is the input file (json|yaml) readable
      *   2) Can an Object of type Reader be created
-     *   1) Is the Openapi definition valid
+     *   3) Is the Openapi definition valid
      *
      * @return bool
      */

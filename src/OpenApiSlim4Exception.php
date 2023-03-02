@@ -13,5 +13,4 @@ use Exception;
 
 class OpenApiSlim4Exception extends Exception
 {
-
 }
