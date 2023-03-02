@@ -8,6 +8,8 @@ use Slim\App;
 use OpenApiSlim4\OpenApiSlim4;
 
 /**
+ * Define local variable types (mainly for the IDE)
+ *
  * @var Container $container
  * @var App $app
  */

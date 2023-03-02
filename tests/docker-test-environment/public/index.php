@@ -13,6 +13,8 @@ $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/..');
 $dotenv->safeLoad();
 
 /**
+ * Define local variable types (mainly for the IDE)
+ *
  * @var Container $container
  * @var array $settings
  * @var array $dependencies
