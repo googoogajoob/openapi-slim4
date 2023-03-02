@@ -1,8 +1,16 @@
 <?php
-/* These tests make use of various configuration scenarios. They are managed here. */
+/**
+ * The tests make use of various configuration scenarios. They are managed here.
+ */
 
+use DI\Container;
+use Slim\App;
 use OpenApiSlim4\OpenApiSlim4;
 
+/**
+ * @var Container $container
+ * @var App $app
+ */
 if ($container->get('nativeSlimConfiguration')) {
     require __DIR__ . '/nativeSlimConfiguration.php';
     slim4ConfigureRoutes($app);
