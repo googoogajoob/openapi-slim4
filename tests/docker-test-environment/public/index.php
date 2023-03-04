@@ -10,6 +10,7 @@ use Dotenv\Dotenv;
 use OpenApiSlim4\OpenApiSlim4;
 use OpenApiSlim4\OpenApiSlim4ShutdownHandler;
 
+error_reporting(0);
 require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/..');
 $dotenv->safeLoad();
@@ -35,23 +36,26 @@ $callableResolver = $app->getCallableResolver();
 $displayErrorDetails = $container->get('displayErrorDetails');
 $logError = $container->get('logError');
 $logErrorDetails = $container->get('logErrorDetails');
+$throwInvalidException = $container->get('throwInvalidException');
 $responseFactory = $app->getResponseFactory();
 $errorHandler = new ErrorHandler($callableResolver, $responseFactory);
+$errorHandler->forceContentType('application/json');
 
-$shutdownHandler = new OpenApiSlim4ShutdownHandler($errorHandler, $displayErrorDetails);
+$shutdownHandler = new OpenApiSlim4ShutdownHandler($errorHandler, $displayErrorDetails, $logError, $logErrorDetails);
 register_shutdown_function($shutdownHandler);
 
 /* BEGIN ROUTE AND MIDDLEWARE CONFIGURATION
-   When using OpenApiSlim4 only the ELSE branch would be needed */
+   When using OpenApiSlim4, only the ELSE branch would be needed */
 if ($container->get('nativeSlimConfiguration')) {
     require __DIR__ . '/../config/nativeSlimConfiguration.php';
     slim4ConfigureRoutes($app);
 #    slim4ConfigureGroupMiddleware($app);  // Future Development
     slim4ConfigureGlobalMiddleware($app);
 } else {
-    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app);
-    $openApiConfigurator->configureFramework();
-    $junk = $a;
+    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, null, $throwInvalidException);
+    if (!$openApiConfigurator->configureFramework()) {
+        throw new Exception($openApiConfigurator->getValidationMessagesString());
+    }
 }
 /* END ROUTE AND MIDDLEWARE CONFIGURATION */
 

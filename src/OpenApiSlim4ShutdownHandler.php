@@ -13,22 +13,26 @@ use Slim\Handlers\ErrorHandler;
 class OpenApiSlim4ShutdownHandler
 {
     protected Request $request;
-
     protected ErrorHandler $errorHandler;
-
     protected bool $displayErrorDetails;
+    protected bool $logError;
+    protected bool $logErrorDetails;
 
     public function __construct(
         ErrorHandler $errorHandler,
-        bool $displayErrorDetails
+        bool $displayErrorDetails,
+        bool $logError,
+        bool $logErrorDetails
     ) {
         $serverRequestCreator = ServerRequestCreatorFactory::create();
         $this->request = $serverRequestCreator->createServerRequestFromGlobals();
         $this->errorHandler = $errorHandler;
         $this->displayErrorDetails = $displayErrorDetails;
+        $this->logError = $logError;
+        $this->logErrorDetails = $logErrorDetails;
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $error = error_get_last();
         if ($error) {
@@ -65,8 +69,8 @@ class OpenApiSlim4ShutdownHandler
                 $this->request,
                 $exception,
                 $this->displayErrorDetails,
-                false,
-                false,
+                $this->logError,
+                $this->logErrorDetails
             );
 
             $responseEmitter = new ResponseEmitter();

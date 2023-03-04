@@ -64,7 +64,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         $isValid = $isValid && $this->configureSlimRoutes();
         $isValid = $isValid && $this->configureSlimGlobalMiddleware();
         if (!$isValid && $this->throwValidationException) {
-            throw new OpenApiSlim4Exception(implode(PHP_EOL, $this->validationMessages));
+            throw new OpenApiSlim4Exception($this->getValidationMessagesString());
         }
 
         return $isValid;
@@ -148,6 +148,22 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         }
 
         return $returnValue;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValidationMessagesArray(): array
+    {
+        return $this->validationMessages;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidationMessagesString(string $separator = PHP_EOL): string
+    {
+        return implode($separator, $this->validationMessages);
     }
 
     /**
