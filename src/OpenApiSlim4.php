@@ -38,18 +38,10 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
                                 ?LoggerInterface $logger = null,
                                 ?bool $throwValidationException = null)
     {
-        if (!is_null($openApi)) {
-            $this->setOpenApi($openApi);
-        }
-        if (!is_null($slimApplication)) {
-            $this->setSlimApplication($slimApplication);
-        }
-        if (!is_null($logger)) {
-            $this->setLogger($logger);
-        }
-        if (!is_null($throwValidationException)) {
-            $this->setThrowValidationException($throwValidationException);
-        }
+        $this->setOpenApi($openApi);
+        $this->setSlimApplication($slimApplication);
+        $this->setLogger($logger);
+        $this->setThrowValidationException($throwValidationException);
     }
 
     /**
@@ -200,13 +192,12 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
 
     /**
      * Set Logger
-     *
-     * @param LoggerInterface $logger
+     * @param LoggerInterface|null $logger
      * @return OpenApiSlim4ConfigurationInterface
      */
-    public function setLogger(LoggerInterface $logger): OpenApiSlim4ConfigurationInterface
+    public function setLogger(?LoggerInterface $logger): OpenApiSlim4ConfigurationInterface
     {
-        $this->logger = $logger;
+        $this->logger = $logger ?? null;
 
         return $this;
     }
@@ -214,23 +205,23 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     /**
      * Set the source of the OpenApi Configuration Definition
      *
-     * @param string|OpenApi $openApi
+     * @param string|OpenApi|null $openApi
      * @return OpenApiSlim4ConfigurationInterface
      */
-    public function setOpenApi(string|OpenApi $openApi): OpenApiSlim4ConfigurationInterface
+    public function setOpenApi(string|OpenApi|null $openApi): OpenApiSlim4ConfigurationInterface
     {
-        $this->openApi = $openApi;
+        $this->openApi = $openApi ?? null;
 
         return $this;
     }
 
     /**
-     * @param App $SlimApplication
+     * @param App|null $SlimApplication
      * @return OpenApiSlim4ConfigurationInterface
      */
-    public function setSlimApplication(App $SlimApplication): OpenApiSlim4ConfigurationInterface
+    public function setSlimApplication(?App $SlimApplication): OpenApiSlim4ConfigurationInterface
     {
-        $this->SlimApplication = $SlimApplication;
+        $this->SlimApplication = $SlimApplication ?? null;
 
         return $this;
     }
@@ -238,12 +229,12 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     /**
      * Set a switch which determines if an exception should be thrown when the validation is unsuccessful
      *
-     * @param bool $throwValidationException
+     * @param bool|null $throwValidationException
      * @return OpenApiSlim4ConfigurationInterface
      */
-    public function setThrowValidationException(bool $throwValidationException): OpenApiSlim4ConfigurationInterface
+    public function setThrowValidationException(?bool $throwValidationException): OpenApiSlim4ConfigurationInterface
     {
-        $this->throwValidationException = $throwValidationException;
+        $this->throwValidationException = $throwValidationException ?? false;
 
         return $this;
     }
