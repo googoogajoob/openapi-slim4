@@ -5,3 +5,4 @@
 /tests/docker-test-environment/config/examples/
 /tests/docker-test-environment/tests/codeception/_output/
 /tests/docker-test-environment/.env
+/tests/docker-test-environment/log/OpenApiSlim4.log

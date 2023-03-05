@@ -260,7 +260,9 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         $isValid = $isValid && $this->validateSlimApplication();
         $isValid = $isValid && $this->getPathConfigurationData();
 
-        return $isValid;
+        $this->validationMessages[] = 'DUDE, where is my error?';
+        return false;
+        #return $isValid;
     }
 
     /**

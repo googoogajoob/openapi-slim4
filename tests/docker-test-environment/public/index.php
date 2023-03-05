@@ -34,11 +34,12 @@ $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
 $displayErrorDetails = $container->get('displayErrorDetails');
+$logger = $container->get('Psr\Log\LoggerInterface');
 $logError = $container->get('logError');
 $logErrorDetails = $container->get('logErrorDetails');
-$throwInvalidException = $container->get('throwInvalidException');
+$throwExceptionOnInvalid = $container->get('throwExceptionOnInvalid');
 $responseFactory = $app->getResponseFactory();
-$errorHandler = new ErrorHandler($callableResolver, $responseFactory);
+$errorHandler = new ErrorHandler($callableResolver, $responseFactory, $logger);
 $errorHandler->forceContentType('application/json');
 
 $shutdownHandler = new OpenApiSlim4ShutdownHandler($errorHandler, $displayErrorDetails, $logError, $logErrorDetails);
@@ -52,7 +53,7 @@ if ($container->get('nativeSlimConfiguration')) {
 #    slim4ConfigureGroupMiddleware($app);  // Future Development
     slim4ConfigureGlobalMiddleware($app);
 } else {
-    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, null, $throwInvalidException);
+    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, $logger, $throwExceptionOnInvalid);
     if (!$openApiConfigurator->configureFramework()) {
         throw new Exception($openApiConfigurator->getValidationMessagesString());
     }
