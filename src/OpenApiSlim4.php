@@ -78,7 +78,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             }
         } catch (Exception $exception) {
             $returnValue = false;
-            $this->validationMessages[] = $exception->getMessage();
+            $this->validationMessages[] = 'Exception configuring Global Middleware: ' . $exception->getMessage();
         }
 
         return $returnValue;
@@ -105,7 +105,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             }
         } catch (Exception $exception) {
             $returnValue = false;
-            $this->validationMessages[] = $exception->getMessage();
+            $this->validationMessages[] = 'Exception configuring Slim Routes: ' . $exception->getMessage();
         }
 
         return $returnValue;
@@ -136,7 +136,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             }
         } catch (Exception $exception) {
             $returnValue = false;
-            $this->validationMessages[] = $exception->getMessage();
+            $this->validationMessages[] = 'Exception retrieving Path configuration data: ' . $exception->getMessage();
         }
 
         return $returnValue;
@@ -251,9 +251,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
         $isValid = $isValid && $this->validateSlimApplication();
         $isValid = $isValid && $this->getPathConfigurationData();
 
-        $this->validationMessages[] = 'DUDE, where is my error?';
-        return false;
-        #return $isValid;
+        return $isValid;
     }
 
     /**
@@ -265,12 +263,12 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     {
         $returnValue = true;
         if (is_null($this->SlimApplication)) {
-            $this->validationMessages[] ='Slim Application is not defined';
+            $this->validationMessages[] = 'Slim Application is not defined';
             $returnValue = false;
         }
         if ($returnValue && is_null($this->openApi)) {
             $returnValue = false;
-            $this->validationMessages[] ='Openapi object is not defined';
+            $this->validationMessages[] = 'Openapi object is not defined';
         }
 
         return $returnValue;
@@ -291,16 +289,15 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
             $this->resolveOpenApiObject();
         } catch (TypeErrorException | UnresolvableReferenceException | IOException | InvalidJsonPointerSyntaxException $exception) {
             $returnValue = false;
-            $this->validationMessages[] = $exception->getMessage();
+            $this->validationMessages[] = 'Exception resolving OpenApi Definition: ' . $exception->getMessage();
         }
-#        if ($returnValue && !$this->openApi instanceof Reader) {
         if ($returnValue && !$this->openApi instanceof OpenApi) {
             $returnValue = false;
             $this->validationMessages[] = 'OpenApiDefinition must be of type: ' . Reader::class;
         }
         if ($returnValue && !$this->openApi->validate()) {
             $returnValue = false;
-            $this->validationMessages[] = implode(PHP_EOL, $this->openApi->getErrors());
+            $this->validationMessages[] = 'Validation Error in the Openapi Definition: ' . implode(PHP_EOL, $this->openApi->getErrors());
         }
 
         return $returnValue;
@@ -315,7 +312,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     {
         $returnValue = true;
         if (!str_starts_with($this->SlimApplication::VERSION, '4')) {
-            $this->validationMessages[] ='Slim Version 4 is required';
+            $this->validationMessages[] = 'Slim Version 4 is required';
             $returnValue = false;
         }
 
