@@ -1,6 +1,8 @@
 <?php
 
 
+use Dotenv\Dotenv;
+
 class ErrorHandlingCest
 {
     protected string $exceptionSource;
@@ -22,6 +24,8 @@ class ErrorHandlingCest
 
     public function __construct()
     {
+        $dotenv = Dotenv::createUnsafeImmutable('/var/www');
+        $dotenv->safeLoad();
         $this->exceptionSource = getenv('throwExceptionOnInvalid') ? 'OpenApiSlim4.php' : 'index.php';
     }
 
