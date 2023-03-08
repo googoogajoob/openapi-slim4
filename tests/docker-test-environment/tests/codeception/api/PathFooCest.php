@@ -1,5 +1,8 @@
 <?php
 
+namespace TestserverTest\codeception\api;
+
+use ApiTester;
 
 class PathFooCest
 {

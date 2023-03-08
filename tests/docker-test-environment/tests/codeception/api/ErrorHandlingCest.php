@@ -1,5 +1,8 @@
 <?php
 
+namespace TestserverTest\codeception\error;
+
+use ApiTester;
 use Dotenv\Dotenv;
 
 class ErrorHandlingCest

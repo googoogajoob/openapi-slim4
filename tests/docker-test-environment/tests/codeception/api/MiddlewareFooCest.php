@@ -1,5 +1,9 @@
 <?php
 
+namespace TestserverTest\codeception\api;
+
+use ApiTester;
+
 class MiddlewareFooCest
 {
     public function _before(ApiTester $I)
