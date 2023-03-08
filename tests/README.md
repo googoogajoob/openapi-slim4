@@ -36,7 +36,7 @@ This project is intended to be one of many vendor applications included via comp
     * The shell script [./run-all-tests.sh](./run-all-tests.sh) uses environment variables and parameters to perform tests for various implementation possibilities
     * The actual tests are performed within the docker test environment 
   * In the docker test environment
-      * The shell script [./docker-test-environment/run-codeception-test.sh](./docker-test-environment/run-codeception-test.sh) runs a series of codeception tests based on the specified environment variables and parameters
+      * The shell script [./docker-test-environment/run-success-test.sh](./docker-test-environment/run-success-test.sh) runs a series of codeception tests based on the specified environment variables and parameters
 
 ## Variables in the docker test environment
 |           | Source main project | Source test environment | Value                             | Remarks                                                                                                                              |

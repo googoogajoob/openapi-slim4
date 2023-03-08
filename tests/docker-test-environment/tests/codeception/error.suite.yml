@@ -1,0 +1,14 @@
+actor: ApiTester
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Api
+        - Filesystem
+        - REST:
+            url: http://localhost
+            depends: PhpBrowser
+            part: Json
+        - PhpBrowser:
+            url: 'http://localhost'
+            curl:
+              CURLOPT_TIMEOUT: 300

@@ -1,6 +1,5 @@
 <?php
 
-
 use Dotenv\Dotenv;
 
 class ErrorHandlingCest
