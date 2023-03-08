@@ -80,9 +80,9 @@ fi
 echo "NATIVE_SLIM_CONFIG=$NATIVE_SLIM4" > $ENVFILE
 if [ $NATIVE_SLIM4 -eq 0 ]; then
   echo "OPENAPI_PATH=/var/www/config/openapi.$OPENAPI_FILE_EXTENSION" >> $ENVFILE
-  $CODECEPTION run --skip ErrorHandlingCest.php --override "paths: output: tests/codeception/_output/OpenApiSlim4"_"$OPENAPI_FILE_EXTENSION" -- api
+  $CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4"_"$OPENAPI_FILE_EXTENSION" -- api
 else
-  $CODECEPTION run --skip ErrorHandlingCest.php --override "paths: output: tests/codeception/_output/Slim4" -- api
+  $CODECEPTION run --override "paths: output: tests/codeception/_output/Slim4" -- api
 fi
 
 $MAKE_TEST_RESULTS_READABLE
