@@ -1,6 +1,6 @@
 <?php
 
-namespace TestserverTest\codeception\error;
+namespace TestserverTest\codeception\errHandling;
 
 use ApiTester;
 use Dotenv\Dotenv;

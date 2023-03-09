@@ -48,6 +48,6 @@ done
 #### Run the Test(s)
 
 echo "OPENAPI_PATH=/var/www/config/openapi_$opt.yml" >> $ENVFILE
-$CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- error ErrorHandlingCest
+$CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- errHandling ErrorHandlingCest
 
 $MAKE_TEST_RESULTS_READABLE
