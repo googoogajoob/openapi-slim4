@@ -1,30 +1,40 @@
 #!/bin/bash
 
+#set parameter defaults
+CLEAR=0
+OPENAPI_SUFFIX=''
+
 ### Set other variables
 ENVFILE="/var/www/.env"
 CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
-MAKE_TEST_RESULTS_READABLE="chown 1000:1000 -R /var/www/tests/codeception/_output"
+MAKE_TEST_RESULTS_READABLE="chown 1000:www-data -R /var/www/tests/codeception/_output"
 
 function print_help {
   echo "Usage: run_error_test.sh [OPTIONS]"
   echo "Options:"
   echo "  -e    Test validation error cases throwing OpenApiSlim4 exception"
   echo "  -E    Test validation error cases without throwing OpenApiSlim4 exception"
+  echo "  -c    Clear previous test results prior to execution"
   echo "  -h    Display this help message"
   echo ""
 }
 
-while getopts ":eEh" opt; do
+while getopts ":eEch" opt; do
   case ${opt} in
     e )
       echo "Option -$opt specified, error cases throwing OpenApiSlim4 exception"
       echo "throwExceptionOnInvalid=1" > $ENVFILE
       DIRECTORY_SUFFIX="ErrorException"
+      OPENAPI_SUFFIX=$opt
       ;;
     E )
       echo "Option -$opt specified, error cases without throwing OpenApiSlim4 exception"
       echo "throwExceptionOnInvalid=0" > $ENVFILE
       DIRECTORY_SUFFIX="ErrorNoException"
+      OPENAPI_SUFFIX=$opt
+      ;;
+    c )
+      CLEAR=1
       ;;
     h )
       print_help
@@ -45,9 +55,15 @@ while getopts ":eEh" opt; do
   esac
 done
 
+if [ $CLEAR -ne 0 ]; then
+  echo "Clearing previous test results"
+  $CODECEPTION CLEAN
+fi
+
 #### Run the Test(s)
 
-echo "OPENAPI_PATH=/var/www/config/openapi_$opt.yml" >> $ENVFILE
+echo "OPENAPI_PATH=/var/www/config/openapi_$OPENAPI_SUFFIX.yml" >> $ENVFILE
+cd ..
 $CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- errHandling ErrorHandlingCest
-
+cat $ENVFILE
 $MAKE_TEST_RESULTS_READABLE
