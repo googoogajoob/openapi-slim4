@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /var/www || exit
+
 #set parameter defaults
 NATIVE_SLIM4=0
 OPENAPI_FILE_EXTENSION="yaml"
@@ -8,7 +10,7 @@ CLEAR=0
 ### Set other variables
 ENVFILE="/var/www/.env"
 CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
-MAKE_TEST_RESULTS_READABLE="chown 1000:www-data -R /var/www/tests/codeception/_output"
+POST_PROCESSING="/var/www/tests/make-tests-readable.sh"
 
 function print_help {
   echo "Usage: run_success_test.sh [OPTIONS]"
@@ -80,12 +82,11 @@ fi
 echo "NATIVE_SLIM_CONFIG=$NATIVE_SLIM4" > $ENVFILE
 echo "OPENAPI_PATH=/var/www/config/openapi.$OPENAPI_FILE_EXTENSION" >> $ENVFILE
 if [ $NATIVE_SLIM4 -eq 0 ]; then
-  cd ..
-  $CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4"_"$OPENAPI_FILE_EXTENSION" -- api
+  $CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/OpenApiSlim4"_"$OPENAPI_FILE_EXTENSION" -- api
 else
-  cd ..
-  $CODECEPTION run --override "paths: output: tests/codeception/_output/Slim4" -- api
+  $CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/Slim4" -- api
 fi
-cat $ENVFILE
 
-$MAKE_TEST_RESULTS_READABLE
+cat $ENVFILE
+cd tests || exit
+$POST_PROCESSING

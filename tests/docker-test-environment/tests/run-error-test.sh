@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /var/www || exit
+
 #set parameter defaults
 CLEAR=0
 OPENAPI_SUFFIX=''
@@ -7,7 +9,7 @@ OPENAPI_SUFFIX=''
 ### Set other variables
 ENVFILE="/var/www/.env"
 CODECEPTION="/usr/local/bin/php /var/www/vendor/bin/codecept"
-MAKE_TEST_RESULTS_READABLE="chown 1000:www-data -R /var/www/tests/codeception/_output"
+POST_PROCESSING="/var/www/tests/make-tests-readable.sh"
 
 function print_help {
   echo "Usage: run_error_test.sh [OPTIONS]"
@@ -63,7 +65,6 @@ fi
 #### Run the Test(s)
 
 echo "OPENAPI_PATH=/var/www/config/openapi_$OPENAPI_SUFFIX.yml" >> $ENVFILE
-cd ..
-$CODECEPTION run --override "paths: output: tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- errHandling ErrorHandlingCest
+$CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- errHandling ErrorHandlingCest
 cat $ENVFILE
-$MAKE_TEST_RESULTS_READABLE
+$POST_PROCESSING
