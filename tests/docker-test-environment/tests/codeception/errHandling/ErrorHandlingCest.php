@@ -47,8 +47,16 @@ class ErrorHandlingCest
         return $returnValue;
     }
 
+    protected function setEnvfile(int $testNumber)
+    {
+        $envfile=file_get_contents('/var/www/.env');
+        $envfile=str_replace('.yml', $testNumber . '.yml', $envfile);
+        file_put_contents('/var/www/.env', $envfile);
+    }
+
     public function errorHandlingTest_00(ApiTester $I)
     {
+        $this->setEnvfile(0);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -67,6 +75,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_01(ApiTester $I)
     {
+        $this->setEnvfile(1);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -85,6 +94,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_02(ApiTester $I)
     {
+        $this->setEnvfile(2);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -103,6 +113,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_03(ApiTester $I)
     {
+        $this->setEnvfile(3);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -121,6 +132,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_04(ApiTester $I)
     {
+        $this->setEnvfile(4);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -139,6 +151,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_05(ApiTester $I)
     {
+        $this->setEnvfile(5);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -157,6 +170,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_06(ApiTester $I)
     {
+        $this->setEnvfile(6);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -175,6 +189,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_07(ApiTester $I)
     {
+        $this->setEnvfile(7);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');
@@ -193,6 +208,7 @@ class ErrorHandlingCest
 
     public function errorHandlingTest_08(ApiTester $I)
     {
+        $this->setEnvfile(8);
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendGet('/foo');

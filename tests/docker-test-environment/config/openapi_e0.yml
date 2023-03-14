@@ -187,6 +187,7 @@ paths:
                 type: string
 components:
   x-middleware:
+    - 0
     - Testserver\Middleware\outgoing\OutgoingMiddleware4
     - Testserver\Middleware\outgoing\OutgoingMiddleware5
     - Testserver\Middleware\incoming\IncomingMiddleware1
