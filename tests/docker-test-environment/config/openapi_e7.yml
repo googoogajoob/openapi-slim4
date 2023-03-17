@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.0.2x
 info:
   title: OpenApiSlim4 Development Testing
   description: Bringing Slim4 and OpenApi together

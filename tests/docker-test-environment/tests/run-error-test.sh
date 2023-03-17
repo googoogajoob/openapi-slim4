@@ -64,7 +64,7 @@ fi
 
 #### Run the Test(s)
 
-echo "OPENAPI_PATH=/var/www/config/openapi_$OPENAPI_SUFFIX.yml" >> $ENVFILE
+echo "OPENAPI_PATH=/var/www/config/openapi_$OPENAPI_SUFFIX?.yml" >> $ENVFILE
 $CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/OpenApiSlim4_$DIRECTORY_SUFFIX" -- errHandling ErrorHandlingCest
 cat $ENVFILE
 $POST_PROCESSING

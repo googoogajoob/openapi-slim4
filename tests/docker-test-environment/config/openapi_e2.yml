@@ -23,7 +23,7 @@ paths:
             application/json:
               schema:
                 type: string
-    post:
+    trace:
       summary: Test service method
       tags:
         - Testing
