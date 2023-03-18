@@ -1,26 +1,44 @@
 #!/bin/bash
 
-echo "Testing native slim configuration ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-success-test.sh -sc > /dev/null
+function run_tests
+{
+  CONTAINER_PHP_VERSION=$(docker exec -it $CONTAINER php -r 'echo PHP_VERSION . "\n";')
+  echo Testing with PHP $CONTAINER_PHP_VERSION
 
-echo "Testing openapi-slim4 with json format ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-success-test.sh -j > /dev/null
+  echo "- native slim configuration ..."
+  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -sc > /dev/null
 
-echo "Testing openapi-slim4 with yaml format ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-success-test.sh -y > /dev/null
+  echo "- openapi-slim4 with json format ..."
+  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -j > /dev/null
 
-echo "Testing openapi-slim4 with yml format ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-success-test.sh -Y > /dev/null
+  echo "- openapi-slim4 with yaml format ..."
+  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -y > /dev/null
 
-echo "Testing openapi-slim4 error handling with validation exception ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-error-test.sh -e > /dev/null
+  echo "- openapi-slim4 with yml format ..."
+  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -Y > /dev/null
 
-echo "Testing openapi-slim4 error handling with NO validation exception ..."
-docker exec -it docker-test-environment_slim4-test_1 /var/www/tests/run-error-test.sh -E > /dev/null
+  echo "- openapi-slim4 error handling with validation exception ..."
+  docker exec -it $CONTAINER /var/www/tests/run-error-test.sh -e > /dev/null
 
-echo
-echo "Tests completed (for results see: docker-test-environment/tests/codeception/_output)"
-echo
-echo "Failed tests contain the word 'fail' in the file name. Here is a list ..."
-find docker-test-environment/tests/codeception/_output -name "*fail*"
-echo
+  echo "- openapi-slim4 error handling with NO validation exception ..."
+  docker exec -it $CONTAINER /var/www/tests/run-error-test.sh -E > /dev/null
+
+  echo
+}
+
+function error_report
+{
+  echo "Tests completed (for results see: docker-test-environment/tests/codeception/_output)"
+  echo
+  echo "Failed tests contain the word 'fail' in the file name. Here is a list ..."
+  find docker-test-environment/tests/codeception/_output -name "*fail*"
+  echo
+}
+
+for PHP_VERSION in "74" "80" "81" "82"
+do
+  CONTAINER=docker-test-environment_slim4-test-php"$PHP_VERSION"_1
+  run_tests
+done
+
+error_report

@@ -1,4 +1,5 @@
-FROM php:8.1-apache AS baseimage
+ARG PHP_VERSION
+FROM php:$PHP_VERSION-apache AS baseimage
 WORKDIR /var/www
 
 ARG COMPOSER_ALLOW_SUPERUSER=1
@@ -19,7 +20,8 @@ EXPOSE 80
 RUN a2enmod rewrite && a2enmod actions && a2enmod proxy_fcgi && a2enmod headers
 
 FROM baseimage AS develop
-RUN pecl install xdebug-3.1.5
+ARG XDEBUG_VERSION
+RUN pecl install xdebug-$XDEBUG_VERSION
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
     echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
