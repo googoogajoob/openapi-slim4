@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Bringing Slim4 and OpenApi together",
     "require": {
-        "php": "^8",
+        "php": "^8.0 || ^8.1 || ^8.2",
         "slim/slim": "4.*",
         "cebe/php-openapi": "^1.7"
     },

@@ -6,7 +6,7 @@ function run_tests
   echo Testing with PHP $CONTAINER_PHP_VERSION
 
   echo "- native slim configuration ..."
-  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -sc > /dev/null
+  docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -s > /dev/null
 
   echo "- openapi-slim4 with json format ..."
   docker exec -it $CONTAINER /var/www/tests/run-success-test.sh -j > /dev/null
@@ -35,7 +35,10 @@ function error_report
   echo
 }
 
-for PHP_VERSION in "74" "80" "81" "82"
+# Remove existing test Results
+rm -fr /var/www/tests/codeception/_output/*
+
+for PHP_VERSION in "80" "81" "82"
 do
   CONTAINER=docker-test-environment_slim4-test-php"$PHP_VERSION"_1
   run_tests

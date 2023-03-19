@@ -81,10 +81,11 @@ fi
 
 echo "NATIVE_SLIM_CONFIG=$NATIVE_SLIM4" > $ENVFILE
 echo "OPENAPI_PATH=/var/www/config/openapi.$OPENAPI_FILE_EXTENSION" >> $ENVFILE
+PHP_VERSION=$(php -r "echo PHP_VERSION;")
 if [ $NATIVE_SLIM4 -eq 0 ]; then
-  $CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/OpenApiSlim4"_"$OPENAPI_FILE_EXTENSION" -- api
+  $CODECEPTION run --override 'paths: output: /var/www/tests/codeception/_output/'PHP_$PHP_VERSION/OpenApiSlim4_"$OPENAPI_FILE_EXTENSION" -- api
 else
-  $CODECEPTION run --override "paths: output: /var/www/tests/codeception/_output/Slim4" -- api
+  $CODECEPTION run --override 'paths: output: /var/www/tests/codeception/_output/'PHP_$PHP_VERSION/Slim4 -- api
 fi
 
 cat $ENVFILE

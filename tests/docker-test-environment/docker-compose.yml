@@ -1,29 +1,5 @@
 version: '3.7'
 services:
-  slim4-test-php74:
-    build:
-      context: .
-      args:
-        PHP_VERSION: "7.4"
-        XDEBUG_VERSION: "3.1.5"
-      dockerfile: .docker/slim4-test/Dockerfile
-      target: develop
-    command: /var/www/bin/startup-dev.sh
-    environment:
-      TZ: Europe/Berlin
-      PHP_IDE_CONFIG: serverName=slim4-test
-      XDEBUG_CONFIG: "idekey=PHPSTORM log_level=0"
-      COMPOSER_ALLOW_SUPERUSER: 1
-      BASE_DIRECTORY: /var/www
-      LOGLEVEL: DEBUG
-      LOGPATH: "php://stderr"
-    ports:
-      - "8081:80"
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    volumes:
-      - .:/var/www
-      - ../..:/opt/googoogajoob/openapi-slim4
   slim4-test-php80:
     build:
       context: .
