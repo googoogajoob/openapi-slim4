@@ -28,10 +28,10 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      *   Required: $openApi and $slimApplication
      *   Optional: $logger and $throwValidationException
      *
-     * @param string|OpenApi|null $openApi //Openapi File (json|yaml) | cebe\openapi\Reader
+     * @param string|OpenApi|null $openApi
      * @param App|null $slimApplication
-     * @param LoggerInterface|null $logger // no logging output  when null
-     * @param bool|null $throwValidationException // throw an OpenApiSlim4Exception if validation errors have occurred
+     * @param LoggerInterface|null $logger
+     * @param bool|null $throwValidationException
      */
     public function __construct(string|OpenApi|null $openApi = null,
                                 ?App $slimApplication = null,
@@ -151,6 +151,7 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
+     * @param string $separator
      * @return string
      */
     public function getValidationMessagesString(string $separator = PHP_EOL): string
@@ -172,9 +173,9 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
      *
      * @return OpenApiSlim4ConfigurationInterface
      * @throws IOException
+     * @throws InvalidJsonPointerSyntaxException
      * @throws TypeErrorException
      * @throws UnresolvableReferenceException
-     * @throws InvalidJsonPointerSyntaxException
      */
     protected function resolveOpenApiObject(): OpenApiSlim4ConfigurationInterface
     {
@@ -191,7 +192,6 @@ class OpenApiSlim4 implements OpenApiSlim4ConfigurationInterface
     }
 
     /**
-     * Set Logger
      * @param LoggerInterface|null $logger
      * @return OpenApiSlim4ConfigurationInterface
      */
