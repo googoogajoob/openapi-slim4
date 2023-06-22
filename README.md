@@ -3,36 +3,36 @@ Configure the paths of a slim4 application from an **openapi** definition.
 
 [![Total Downloads](https://img.shields.io/packagist/dt/monolog/monolog.svg)](https://packagist.org/packages/googoogajoob/openapislim4)
 
-## Specific Capabilities
-* HTTP-Method Handlers
-* Path Middleware
-* Global Middleware
+# Installation
+* composer require googoogajoob/openapislim4
 
+# Requirements
+* Php 8.0
+* Slim4
+* An OpenApi Definition (yaml or json)
 
-### Preface
+# Usage
+
+## Preface
 ```
-With REST-API definitions there is a difference of opinion about terminology. In particular with the terms **PATH** and **ROUTE**.
+With REST-API definitions there is a difference of opinion about terminology. In particular with the terms PATH and ROUTE.
 
 For example when referencing the REST-API endpoint GET /user/data/{id}
 * Slim4 refers to "/user/data" as a ROUTE
 * Openapi refers to "/user/data" as a PATH
 
-The documentation in this project uses the two terms interchangebly 
+The documentation in this project uses the two terms interchangeably 
 ```
 
-# Installation
-* composer require googoogajoob/openapislim4
-# Behavior
-* Slim4 is required
+## Specific Capabilities
+* HTTP-Method Handlers
+* Path Middleware
+* Global Middleware
+
+## Behavior
 * Paths and Middleware will be set in accordance with the Openapi definition (see table below)
 * Optional logging via a _Psr\Log\LoggerInterface_ 
 * Optionally throw an Exception upon validation failure 
-# Usage
-
-## Requirements
-* **ToDo:** Php 8.1
-* Slim4
-* An OpenApi Definition (yaml or json)
 
 ## Openapi - Slim4 Mapping
 The parameters necessary for configuring Slim4 are derived from the Openapi definition. The Slim4-method for performing the configuration has three parameters. This table shows where they are taken from in the openapi definition.
