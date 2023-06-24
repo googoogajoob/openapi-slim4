@@ -69,7 +69,7 @@ The following table summarizes, the possibilities of supplying the settings for 
 ### Minimalistic Parameters
 ### All Parameters
 
-**ToDo:** (is this the right place? maybe it should be up a level or two, wo that it is near the table) For constructor and setter specifications see [src/OpenApiSlim4.php](./src/OpenApiSlim4.php) 
+**ToDo:** (is this the right place? maybe it should be up a level or two, wo that it is near the table) For constructor and setter specifications see [src/OpenApiSlim4.php](./src/OpenApiSlim4.php)
+-->
 # Development and Testing
 For testing details see [tests/README.md](./tests/README.md)
--->
