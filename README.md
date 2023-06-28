@@ -21,14 +21,14 @@ The critical section is
 /* BEGIN ROUTE AND MIDDLEWARE CONFIGURATION
 When using OpenApiSlim4, only the ELSE branch would be needed */
 if ($container->get('nativeSlimConfiguration')) {
-require __DIR__ . '/../config/nativeSlimConfiguration.php';
-slim4ConfigureRoutes($app);
+    require __DIR__ . '/../config/nativeSlimConfiguration.php';
+    slim4ConfigureRoutes($app);
 #    slim4ConfigureGroupMiddleware($app);  // Future Development
     slim4ConfigureGlobalMiddleware($app);
 } else {
     $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, $logger, $throwExceptionOnInvalid);
     if (!$openApiConfigurator->configureFramework()) {
-       throw new Exception($openApiConfigurator->getValidationMessagesString());
+        throw new Exception($openApiConfigurator->getValidationMessagesString());
     }
 }
 /* END ROUTE AND MIDDLEWARE CONFIGURATION */
