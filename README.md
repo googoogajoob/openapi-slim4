@@ -12,7 +12,33 @@ Configure the paths of a slim4 application from an **openapi** definition.
 * An OpenApi Definition (yaml or json)
 
 # Usage
+There are many examples of how one can configure the routes of a slim4 application. One such [skeleton project](https://github.com/slimphp/Slim-Skeleton) uses [index.php](https://github.com/slimphp/Slim-Skeleton/blob/master/public/index.php) and [routes.php](https://github.com/slimphp/Slim-Skeleton/blob/master/app/routes.php) to accomplish this.
 
+The test cases for openapi-slim4 have adapted this in [index.php](./tests/docker-test-environment/public/index.php) where openapi-slim4 replaces the need to call _routes.php_.
+
+The critical section is
+```php
+/* BEGIN ROUTE AND MIDDLEWARE CONFIGURATION
+When using OpenApiSlim4, only the ELSE branch would be needed */
+if ($container->get('nativeSlimConfiguration')) {
+require __DIR__ . '/../config/nativeSlimConfiguration.php';
+slim4ConfigureRoutes($app);
+#    slim4ConfigureGroupMiddleware($app);  // Future Development
+    slim4ConfigureGlobalMiddleware($app);
+} else {
+    $openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, $logger, $throwExceptionOnInvalid);
+    if (!$openApiConfigurator->configureFramework()) {
+       throw new Exception($openApiConfigurator->getValidationMessagesString());
+    }
+}
+/* END ROUTE AND MIDDLEWARE CONFIGURATION */
+```
+Assuming all the variables have been correctly defined the absolute minimum would be the 2 lines
+```php
+$openApiConfigurator = new OpenApiSlim4($container->get('openApiPath'), $app, $logger, $throwExceptionOnInvalid);
+$openApiConfigurator->configureFramework();
+```
+If problems occur, please review the tests
 
 # Description
 ## Preface
@@ -27,34 +53,38 @@ The documentation in this project uses the two terms interchangeably
 ```
 ## Concept
 openapi-slim4 is a tool that can read an openapi specification and dynamically configure a slim4 application accordingly. This includes endpoint handlers as well as middleware.
-openapi-slim4 will typically be called in the _index.php_ entry point of an application and dynamically configure slim4 for every request. 
-This effectively eliminates the need to configure the restapi endpoints via php code. 
+openapi-slim4 will typically be called in the _index.php_ entry point of an application and dynamically configure slim4 upon every request. 
+This effectively eliminates the need to configure the restapi endpoints via other php code such as _routes.php_ for example. 
 
-Thus, when an openapi definition changes the route specifications of the slim4 application will automatically be adjusted.
-Depending on how trivial the changes to the specification were, this may or may not have larger consequences for the handler and middleware codebase.
+Thus, when an openapi definition changes, the route specifications of the slim4 application will automatically be adjusted.
+Depending on how trivial the changes to the specification are, this may or may not have larger consequences for the handler and middleware codebase.
 
 In essence openapi-slim4 performs the following:
 * Openapi endpoint definitions are mapped to handlers
-* Path middleware defined in openapi is mapped as middleware to the path in slim4
 * Global middleware defined in openapi is configured as global middleware in slim4
+* Configuring PATH middleware is planned for future development 
 
-An openapi definition does not allow for the specification middleware. openapi-slim4 implements an extension to the standard openapi syntax which allows for this.
+_An openapi definition does not allow for the specification of middleware. However, openapi-slim4 implements an extension to the standard openapi syntax which allows for this._
 
 ### The 'source-of-truth' argument
-In discussions surrounding the implementation of openapi in the development of RestApis for frontend and backend development, the _source-of-truth_ argument often comes into play.
-Central to this discussion is the question of "what role does the openapi play in the software architecture?". Is it simply a means of documentation or is it the controlling instance of how a RestApi service should work?   
+In discussions surrounding the implementation of openapi in the development of restapis, the _source-of-truth_ argument often comes into play.
+Central to this discussion is the question, "what role does the openapi definition play in the larger software architecture? 
+Is it simply a means of documentation or is it the controlling instance of how a restapi service actually operates?"   
 #### Documentation Only
-This viewpoint sees an openapi specification simply as a means of documentation. The actual 'source of truth' is the code that creates the RestApi service, in this case a php slim4 application. There are certainly a number of other possibilities.
-This may be the best option for smaller development teams, where only a few clients a dependent on the RestApi service.  
+This viewpoint sees an openapi specification simply as a means of documentation. The actual 'source of truth' is the code that creates the restapi service (a php slim4 application or any number of other possibilities).
+In such scenarios there are many generators available which can dynamically create an openapi documentation from a specific codebase.
+This may be the best option for smaller development teams, where only a few clients are dependent on the restapi service and communication between developers is uncomplicated.  
 #### Controlling instance
-This viewpoint sees an openapi specification not only as documentation but also as the document which ultimately defines how a RestApi service MUST operate. Any client which wishes to use the service need not have any contact with the developer of the service. They can simply assume that the service will do exactly what is specified in the openapi definition.
-In this sense the openapi definition is a kind of contract, to which all participants should conform. This may make more sense for larger development teams.
+This viewpoint sees an openapi specification not only as documentation but also as the document which ultimately defines how a restapi service MUST operate.
+Any client which wishes to use the service need not have any contact with the developer of the service. They can simply assume that the service will do exactly what is specified in the openapi definition.
+In this sense the openapi definition is a kind of contract, to which all participants should conform.
+This may make more sense for larger development teams. A smaller architectural team creates the definition and all developers hold to it, thus reducing the need for communication among developers.
 
-**openapi-slim4 is constructed to support this type of operation**
+>openapi-slim4 was conceived to support the 'controlling instance' type of operation
 
 ## Specific Capabilities
 * HTTP-Method Handlers
-* Path Middleware
+* Path Middleware (Future development)
 * Global Middleware
 
 ## Behavior
@@ -77,12 +107,12 @@ RouteCollectorProxy::map(array $methods, string $pattern, $callable): RouteInter
 ## Parameter Definitions and Dependency Injection Options 
 The following table summarizes, the possibilities of supplying the settings for the **openapi-slim4** object
 
-|                            | Constructor |                Setter                 |  Environment Variable   | Required | Default | Remarks                                                                                                             |
-|----------------------------|:----------:|:-------------------------------------:|:-----------------------:|:----:|----|---------------------------------------------------------------------------------------------------------------------|
-| Openapi Definition         | ✅           |     ✅<br>openapi-slim4::setOpenApi     | Filename only |✅|None| The Openapi definition can be specified as an object of cebe/php-openapi/src/Reader or a filename (JSON, YAML, YML) |
-| Slim4 App                  | ✅           | ✅<br>openapi-slim4::setSlimApplication |            ❌            |✅|None| Set the Slim4 **app** Object                                                                                        | 
-| Logging                    | ✅           |                   ✅                   |            ❌            |❌|False - no logging| Environment Variable Flag. Default false (no logging)                                                               |
-| Throw Validation Exception | ✅           |                   ✅                   |            ❌            |❌|False - exceptions not thrown| Environment Variable Flag. Default false (no exception)                                                             |
+|                            | Constructor |                Setter                 |        Environment Variable         | Required | Default | Remarks                                                                                                             |
+|----------------------------|:----------:|:-------------------------------------:|:-----------------------------------:|:----:|----|---------------------------------------------------------------------------------------------------------------------|
+| Openapi Definition         | ✅           |     ✅<br>OpenApiSlim4::setOpenApi     | **OPENAPI_PATH**<br>_Filename only_ |✅|None| The Openapi definition can be specified as an object of cebe/php-openapi/src/Reader or a filename (JSON, YAML, YML) |
+| Slim4 App                  | ✅           | ✅<br>OpenApiSlim4::setSlimApplication |                  ❌                  |✅|None| Set the Slim4 **app** Object                                                                                        | 
+| Logging                    | ✅           |                   ✅                   |                  ❌                  |❌|False - no logging| Environment Variable Flag. Default false (no logging)                                                               |
+| Throw Validation Exception | ✅           |                   ✅                   |                  ❌                  |❌|False - exceptions not thrown| Environment Variable Flag. Default false (no exception)                                                             |
 
 # Development and Testing
 For testing details see [tests/README.md](./tests/README.md)
