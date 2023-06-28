@@ -43,7 +43,8 @@ If problems occur, please review the tests
 # Description
 ## Preface
 ```
-With REST-API definitions there is a difference of opinion about terminology. In particular with the terms PATH and ROUTE.
+With REST-API definitions there is a difference of opinion about terminology.
+In particular with the terms PATH and ROUTE.
 
 For example when referencing the REST-API endpoint GET /user/data/{id}
 * Slim4 refers to "/user/data" as a ROUTE
@@ -75,9 +76,8 @@ This viewpoint sees an openapi specification simply as a means of documentation.
 In such scenarios there are many generators available which can dynamically create an openapi documentation from a specific codebase.
 This may be the best option for smaller development teams, where only a few clients are dependent on the restapi service and communication between developers is uncomplicated.  
 #### Controlling instance
-This viewpoint sees an openapi specification not only as documentation but also as the document which ultimately defines how a restapi service MUST operate.
-Any client which wishes to use the service need not have any contact with the developer of the service. They can simply assume that the service will do exactly what is specified in the openapi definition.
-In this sense the openapi definition is a kind of contract, to which all participants should conform.
+This viewpoint sees an openapi specification not only as documentation but also as the document which ultimately defines how a restapi service WILL actually operate. The openapi specification is not only documentation but also a configuration file.
+In this sense the openapi definition is a kind of contract, to which all participants MUST conform.
 This may make more sense for larger development teams. A smaller architectural team creates the definition and all developers hold to it, thus reducing the need for communication among developers.
 
 >openapi-slim4 was conceived to support the 'controlling instance' type of operation
