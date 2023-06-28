@@ -14,7 +14,7 @@ The focus of the tests is not the actual json response but the fact that the cor
 * In addition, as a fourth aspect, **openapi-slim4** can define middleware handlers 
 * This is possible at two levels:
   1. Global Middleware
-  2. Specific path/route middleware
+  2. Specific path/route middleware (Future development)
 
 In a similar fashion to the main handler tests, these tests are not interested in the content and/or function of the middleware but rather the fact that the middleware has been correctly called in accordance with the openapi definition 
 
